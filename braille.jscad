@@ -1,16 +1,4 @@
-var dot_distance = 2.5;
-var dot_diameter = 1.5;
-var dot_height = 0.8;
-
-var form_distance = 6;
-var line_height = 10;
-var max_forms_width = 6;
-
-var plate_height = 0.4;
-var plate_margin = 5;
-
-var resolution = 20;
-
+var parameters;
 var characters =
 {
 	" " : 0,
@@ -51,22 +39,22 @@ function log(text)
 
 function form_base()
 {
-	var dimensions = [form_distance/2, line_height/2, plate_height/2];
-	var offset = [form_distance/2, -line_height/2, plate_height/2];
+	var dimensions = [parameters.form_distance/2, parameters.line_height/2, parameters.plate_height/2];
+	var offset = [parameters.form_distance/2, -parameters.line_height/2, parameters.plate_height/2];
 	
 	return CSG.cube({ center: offset, radius: dimensions });
 }
 
 function dot(x, y)
 {
-	var x_pos = (form_distance - dot_distance) / 2 + (x-1) * dot_distance;
-	var y_pos = -(line_height - dot_distance*2) / 2 - (y-1) * dot_distance;
+	var x_pos = (parameters.form_distance - parameters.dot_distance) / 2 + (x-1) * parameters.dot_distance;
+	var y_pos = -(parameters.line_height - parameters.dot_distance*2) / 2 - (y-1) * parameters.dot_distance;
 	
-	var dot = CSG.sphere({ center: [0, 0, 0], radius: 1, resolution: resolution });
+	var dot = CSG.sphere({ center: [0, 0, 0], radius: 1, resolution: parameters.resolution });
 	var sub = CSG.cube({ center: [0, 0, 0], radius: [1.25, 1.25, 1] }).translate([0, 0, -1.05]);
 	dot = dot.subtract(sub);
-	dot = dot.scale([dot_diameter/2, dot_diameter/2, dot_height]);
-	dot = dot.translate([x_pos, y_pos, plate_height]);
+	dot = dot.scale([parameters.dot_diameter/2, parameters.dot_diameter/2, parameters.dot_height]);
+	dot = dot.translate([x_pos, y_pos, parameters.plate_height]);
 	
 	return dot;
 }
@@ -120,10 +108,10 @@ function generate(text)
 		
 		lineWidth++;
 		
-		if (lineWidth > max_forms_width)
+		if (lineWidth > parameters.max_forms_width)
 		{
 			numLines++;
-			lineWidth %= max_forms_width;
+			lineWidth %= parameters.max_forms_width;
 		}
 		
 		log(newCharacter);
@@ -138,18 +126,18 @@ function generate(text)
 		if (charCode > 0)
 			textWidth = Math.max(textWidth, lineWidth);
 		
-		var position = [form_distance * (lineWidth-1), line_height * -(numLines-1), 0];
+		var position = [parameters.form_distance * (lineWidth-1), parameters.line_height * -(numLines-1), 0];
 		var theCharacter = characterByCode(charCode).translate(position);
 		
 		result = result.union(theCharacter);
 	}
 	
-	result = result.translate([plate_margin, -plate_margin, 0]);
+	result = result.translate([parameters.plate_margin, -parameters.plate_margin, 0]);
 	
-	var marginFactor = [(plate_margin*2)/form_distance, (plate_margin*2)/line_height];
+	var marginFactor = [(parameters.plate_margin*2)/parameters.form_distance, (parameters.plate_margin*2)/parameters.line_height];
 	result = result.union(form_base().scale([textWidth + marginFactor[0], numLines + marginFactor[1], 1]));
 	
-	var dimensions = [textWidth*form_distance+plate_margin*2, numLines*line_height+plate_margin*2];
+	var dimensions = [textWidth*parameters.form_distance+parameters.plate_margin*2, numLines*parameters.line_height+parameters.plate_margin*2];
 	result = result.translate([-dimensions[0]/2, dimensions[1]/2, 0]);
 	
 	return result;
@@ -157,24 +145,36 @@ function generate(text)
 
 
 
-
-
 function getParameterDefinitions()
 {
 	return [
-	{ name: 'text', caption: 'Text:', type: 'text', default: 'Hello World' }
+	{ name: 'text', caption: 'Text', type: 'text', default: 'Hello World' },
+	
+	{ name: 'dot_distance', caption: 'Dot distance:', type: 'float', default: 2.5 },
+	{ name: 'dot_diameter', caption: 'Dot diameter:', type: 'float', default: 1.5 },
+	{ name: 'dot_height', caption: 'Dot height:', type: 'float', default: 0.8 },
+
+	{ name: 'form_distance', caption: 'Form distance:', type: 'float', default: 6.0 },
+	{ name: 'line_height', caption: 'Line height:', type: 'float', default: 10.0 },
+	{ name: 'max_forms_width', caption: 'Max. forms per line:', type: 'int', default: 6 },
+
+	{ name: 'plate_height', caption: 'Plate height:', type: 'float', default: 0.4 },
+	{ name: 'plate_margin', caption: 'Plate margin:', type: 'float', default: 5.0 },
+
+	{ name: 'resolution', caption: 'Resolution', type: 'int', default: 20 }
+	
 	];
 }
 
 function main(params)
 {
-
 	log("start");
 	
-	log("generating: " + params.text);
+	parameters = params;
 	
-	var result = generate(params.text);
+	log("generating: " + parameters.text);
 	
+	var result = generate(parameters.text);	
 	
 	log("finish");
 	
