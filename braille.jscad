@@ -50,9 +50,23 @@ function dot(x, y)
 	var x_pos = (parameters.form_distance - parameters.dot_distance) / 2 + (x-1) * parameters.dot_distance;
 	var y_pos = -(parameters.line_height - parameters.dot_distance*2) / 2 - (y-1) * parameters.dot_distance;
 	
-	var dot = CSG.sphere({ center: [0, 0, 0], radius: 1, resolution: parameters.resolution });
-	var sub = CSG.cube({ center: [0, 0, 0], radius: [1.25, 1.25, 1] }).translate([0, 0, -1.05]);
-	dot = dot.subtract(sub);
+	var dot;
+	
+	if (parameters.dot_shape == 'sphere')
+	{
+		dot = CSG.sphere({ center: [0, 0, 0], radius: 1, resolution: parameters.resolution });
+		var sub = CSG.cube({ center: [0, 0, 0], radius: [1.25, 1.25, 1] }).translate([0, 0, -1.05]);
+		dot = dot.subtract(sub);
+	}
+	else if (parameters.dot_shape == 'cylinder')
+	{
+		dot = CSG.cylinder({ start: [0, 0, -0.05], end: [0, 0, 1], radius: 1, resolution: parameters.resolution });
+	}
+	else
+	{
+		throw new Error("Unknown dot shape '" + parameters.dot_shape + "'");
+	}
+	
 	dot = dot.scale([parameters.dot_diameter/2, parameters.dot_diameter/2, parameters.dot_height]);
 	dot = dot.translate([x_pos, y_pos, parameters.plate_height]);
 	
@@ -150,6 +164,7 @@ function getParameterDefinitions()
 	return [
 	{ name: 'text', caption: 'Text', type: 'text', default: 'Hello World' },
 	
+	{ name: 'dot_shape', caption: 'Dot shape', type: 'choice', values: ['sphere', 'cylinder'], captions: ['Hemisphere', 'Cylinder'], default: 'sphere' },
 	{ name: 'dot_distance', caption: 'Dot distance:', type: 'float', default: 2.5 },
 	{ name: 'dot_diameter', caption: 'Dot diameter:', type: 'float', default: 1.5 },
 	{ name: 'dot_height', caption: 'Dot height:', type: 'float', default: 0.8 },
