@@ -7,6 +7,7 @@ var line_height = 10;
 var max_forms_width = 6;
 
 var plate_height = 0.4;
+var plate_margin = 5;
 
 var resolution = 20;
 
@@ -51,13 +52,15 @@ function log(text)
 function form_base()
 {
 	var dimensions = [form_distance/2, line_height/2, plate_height/2];
-	return CSG.cube({ center: dimensions, radius: dimensions });
+	var offset = [form_distance/2, -line_height/2, plate_height/2];
+	
+	return CSG.cube({ center: offset, radius: dimensions });
 }
 
 function dot(x, y)
 {
 	var x_pos = (form_distance - dot_distance) / 2 + (x-1) * dot_distance;
-	var y_pos = (line_height - dot_distance*2) / 2 + (3-y) * dot_distance;
+	var y_pos = -(line_height - dot_distance*2) / 2 - (y-1) * dot_distance;
 	
 	var dot = CSG.sphere({ center: [0, 0, 0], radius: 1, resolution: resolution });
 	var sub = CSG.cube({ center: [0, 0, 0], radius: [1.25, 1.25, 1] }).translate([0, 0, -1.05]);
@@ -123,8 +126,6 @@ function generate(text)
 			lineWidth %= max_forms_width;
 		}
 		
-		textWidth = Math.max(textWidth, lineWidth);
-		
 		log(newCharacter);
 		var charCode = characters[newCharacter];
 		
@@ -134,13 +135,22 @@ function generate(text)
 			charCode = characters["?"];
 		}
 		
-		var position = [form_distance * (lineWidth-1), line_height * (numLines-1), 0];
+		if (charCode > 0)
+			textWidth = Math.max(textWidth, lineWidth);
+		
+		var position = [form_distance * (lineWidth-1), line_height * -(numLines-1), 0];
 		var theCharacter = characterByCode(charCode).translate(position);
 		
 		result = result.union(theCharacter);
 	}
 	
-	result = result.union(form_base().scale([textWidth, numLines, 1]));
+	result = result.translate([plate_margin, -plate_margin, 0]);
+	
+	var marginFactor = [(plate_margin*2)/form_distance, (plate_margin*2)/line_height];
+	result = result.union(form_base().scale([textWidth + marginFactor[0], numLines + marginFactor[1], 1]));
+	
+	var dimensions = [textWidth*form_distance+plate_margin*2, numLines*line_height+plate_margin*2];
+	result = result.translate([-dimensions[0]/2, dimensions[1]/2, 0]);
 	
 	return result;
 }
