@@ -39,8 +39,8 @@ function log(text)
 
 function form_base()
 {
-	var dimensions = [parameters.form_distance/2, parameters.line_height/2, parameters.plate_height/2];
-	var offset = [parameters.form_distance/2, -parameters.line_height/2, parameters.plate_height/2];
+	var dimensions = [parameters.form_distance/2, parameters.line_height/2, parameters.plate_thickness/2];
+	var offset = [parameters.form_distance/2, -parameters.line_height/2, parameters.plate_thickness/2];
 	
 	return CSG.cube({ center: offset, radius: dimensions });
 }
@@ -68,7 +68,7 @@ function dot(x, y)
 	}
 	
 	dot = dot.scale([parameters.dot_diameter/2, parameters.dot_diameter/2, parameters.dot_height]);
-	dot = dot.translate([x_pos, y_pos, parameters.plate_height]);
+	dot = dot.translate([x_pos, y_pos, parameters.plate_thickness]);
 	
 	return dot;
 }
@@ -171,9 +171,9 @@ function getParameterDefinitions()
 
 	{ name: 'form_distance', caption: 'Form distance:', type: 'float', default: 6.0 },
 	{ name: 'line_height', caption: 'Line height:', type: 'float', default: 10.0 },
-	{ name: 'max_forms_width', caption: 'Max. forms per line:', type: 'int', default: 6 },
 
-	{ name: 'plate_height', caption: 'Plate height:', type: 'float', default: 0.4 },
+	{ name: 'max_forms_width', caption: 'Max. forms per line:', type: 'int', default: 6 },
+	{ name: 'plate_thickness', caption: 'Plate thickness:', type: 'float', default: 0.4 },
 	{ name: 'plate_margin', caption: 'Plate margin:', type: 'float', default: 5.0 },
 
 	{ name: 'resolution', caption: 'Resolution', type: 'int', default: 20 }
