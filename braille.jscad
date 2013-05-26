@@ -4,25 +4,49 @@ var dot_height = 0.8;
 
 var form_distance = 6;
 var line_height = 10;
+var max_forms_width = 6;
 
 var plate_height = 0.4;
 
 var resolution = 20;
 
-var characters = {
-	" " : [],
-	"a" : [[1,1]],
-	"d" : [[1,1],[2,1],[2,2]],
-	"e" : [[1,1],[2,2]],
-	"h" : [[1,1],[1,2],[2,2]],
-	"j" : [[2,1],[1,2],[2,2]],
-	"l" : [[1,1],[1,2],[1,3]],
-	"n" : [[1,1],[2,1],[2,2],[1,3]],
-	"o" : [[1,1],[2,2],[1,3]],
-	"r" : [[1,1],[1,2],[2,2],[1,3]],
-	"w" : [[2,1],[1,2],[2,2],[2,3]]
+var characters =
+{
+	" " : 0,
+	"a" : 1,
+	"b" : 12,
+	"c" : 14,
+	"d" : 145,
+	"e" : 15,
+	"f" : 124,
+	"g" : 1245,
+	"h" : 125,
+	"i" : 24,
+	"j" : 245,
+	"k" : 13,
+	"l" : 123,
+	"m" : 134,
+	"n" : 1345,
+	"o" : 135,
+	"p" : 1234,
+	"q" : 12345,
+	"r" : 1235,
+	"s" : 234,
+	"t" : 2345,
+	"u" : 136,
+	"v" : 1236,
+	"w" : 2456,
+	"x" : 1346,
+	"y" : 13456,
+	"z" : 1356,
+	"?" : 26
 };
 
+function log(text)
+{
+	if (OpenJsCad.log)
+		OpenJsCad.log(text);
+}
 
 function form_base()
 {
@@ -44,11 +68,26 @@ function dot(x, y)
 	return dot;
 }
 
-function character(dots)
+function characterByCode(charCode)
+{
+	var dotArray = new Array();
+	
+	while (charCode > 0)
+	{
+		var dotCode = (charCode % 10) - 1;
+		charCode = Math.floor(charCode / 10);
+		if (dotCode < 0)
+			continue;
+		
+		dotArray.unshift([dotCode < 3 ? 1 : 2, (dotCode % 3) + 1]);
+	}
+	
+	return characterByDots(dotArray);
+}
+
+function characterByDots(dots)
 {
 	var theCharacter = new CSG();//form_base();
-	
-	OpenJsCad.log(dots + "-" + dots.length);
 	
 	for (var i=0; i < dots.length; i++)
 	{
@@ -61,16 +100,48 @@ function character(dots)
 
 function generate(text)
 {
-	text = text.toLowerCase();
+	var result = new CSG();
+	if (text.length == 0)
+		return result;
 	
-	var result = form_base().scale([text.length, 1, 1]);
+	var numLines = 1;
+	var textWidth = 0;
+	var lineWidth = 0;
+	
+	//TODO: add $ and lowercase character instead
+	text = text.toLowerCase();
 	
 	for (var c=0; c < text.length; c++)
 	{
-		OpenJsCad.log(text[c]);
-		var actChar = character(characters[text.charAt(c)]);
-		result = result.union(actChar.translate([form_distance*c, 0, 0]));
+		var newCharacter = text.charAt(c);
+		
+		lineWidth++;
+		
+		if (lineWidth > max_forms_width)
+		{
+			numLines++;
+			lineWidth %= max_forms_width;
+		}
+		
+		textWidth = Math.max(textWidth, lineWidth);
+		
+		log(newCharacter);
+		var charCode = characters[newCharacter];
+		
+		if (typeof charCode == "undefined")
+		{
+			log("invalid character: " + newCharacter);
+			charCode = characters["?"];
+		}
+		
+		var position = [form_distance * (lineWidth-1), line_height * (numLines-1), 0];
+		var theCharacter = characterByCode(charCode).translate(position);
+		
+		result = result.union(theCharacter);
 	}
+	
+	result = result.union(form_base().scale([textWidth, numLines, 1]));
+	
 	return result;
 }
 
@@ -88,16 +159,14 @@ function getParameterDefinitions()
 function main(params)
 {
 
-	if (OpenJsCad.log)
-		OpenJsCad.log("start");
+	log("start");
 	
-	OpenJsCad.log("generating: " + params.text);
+	log("generating: " + params.text);
 	
 	var result = generate(params.text);
 	
 	
-	if (OpenJsCad.log)
-		OpenJsCad.log("finish");
+	log("finish");
 	
 	return result;
 }
