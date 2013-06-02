@@ -45,28 +45,66 @@ function form_base()
 	return CSG.cube({ center: offset, radius: dimensions });
 }
 
+function rotateZ_extrude(obj2d, resolution)
+{
+	return obj2d.solidFromSlices({
+		numslices: resolution,
+		loop : true,
+		callback: function(t, slice) {
+			return this.rotateZ(360/resolution*slice);
+		}
+	});
+}
+
+function ring(radius1, radius2, resolution)
+{	
+	points = new Array(resolution);
+	for (var i=0; i<resolution; i++)
+	{
+		var t = i/resolution;
+		var angle = Math.PI * 2 * t;
+		var x = radius1 * Math.cos(angle);
+		var z = radius1 * Math.sin(angle);
+		points[i] = [x,0,z];
+	}
+	
+	var circle = CSG.Polygon.createFromPoints(points).translate([radius2-radius1,0,0]);
+	return rotateZ_extrude(circle, resolution);
+}
+
+function union_dot(shape)
+{
+	if (shape == 'sphere')
+	{
+		dot = CSG.sphere({ center: [0, 0, 0], radius: 1, resolution: parameters.resolution });
+		var sub = CSG.cube({ center: [0, 0, 0], radius: [1.25, 1.25, 1] }).translate([0, 0, -1.05]);
+		return dot.subtract(sub);
+	}
+	else if (shape == 'cylinder')
+	{
+		return CSG.cylinder({ start: [0, 0, -0.05], end: [0, 0, 1], radius: 1, resolution: parameters.resolution });
+	}
+	else if (shape == 'smooth')
+	{
+		var dot = CSG.sphere({ center: [0, 0, 0], radius: 1, resolution: parameters.resolution });
+		var base = CSG.cylinder({ start: [0, 0, -1.05], end: [0, 0, 0], radius: 1.5, resolution: parameters.resolution });
+		dot = dot.union(base).translate([0, 0, 1]).scale([1, 1, 0.5]);
+		var smoother = ring(0.5, 2, parameters.resolution).translate([0, 0, 0.5]);
+		return dot.subtract(smoother);
+	}
+	else
+	{
+		throw new Error("Unknown dot shape '" + parameters.dot_shape + "'");
+		return new CSG();
+	}
+}
+
 function dot(x, y)
 {
 	var x_pos = (parameters.form_distance - parameters.dot_distance) / 2 + (x-1) * parameters.dot_distance;
 	var y_pos = -(parameters.line_height - parameters.dot_distance*2) / 2 - (y-1) * parameters.dot_distance;
 	
-	var dot;
-	
-	if (parameters.dot_shape == 'sphere')
-	{
-		dot = CSG.sphere({ center: [0, 0, 0], radius: 1, resolution: parameters.resolution });
-		var sub = CSG.cube({ center: [0, 0, 0], radius: [1.25, 1.25, 1] }).translate([0, 0, -1.05]);
-		dot = dot.subtract(sub);
-	}
-	else if (parameters.dot_shape == 'cylinder')
-	{
-		dot = CSG.cylinder({ start: [0, 0, -0.05], end: [0, 0, 1], radius: 1, resolution: parameters.resolution });
-	}
-	else
-	{
-		throw new Error("Unknown dot shape '" + parameters.dot_shape + "'");
-	}
-	
+	var dot = union_dot(parameters.dot_shape);
 	dot = dot.scale([parameters.dot_diameter/2, parameters.dot_diameter/2, parameters.dot_height]);
 	dot = dot.translate([x_pos, y_pos, parameters.plate_thickness]);
 	
@@ -164,7 +202,7 @@ function getParameterDefinitions()
 	return [
 	{ name: 'text', caption: 'Text', type: 'text', default: 'Hello World' },
 	
-	{ name: 'dot_shape', caption: 'Dot shape', type: 'choice', values: ['sphere', 'cylinder'], captions: ['Hemisphere', 'Cylinder'], default: 'sphere' },
+	{ name: 'dot_shape', caption: 'Dot shape', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Hemisphere', 'Cylinder', 'Smooth'], default: 'smooth' },
 	{ name: 'dot_distance', caption: 'Dot distance:', type: 'float', default: 2.5 },
 	{ name: 'dot_diameter', caption: 'Dot diameter:', type: 'float', default: 1.5 },
 	{ name: 'dot_height', caption: 'Dot height:', type: 'float', default: 0.8 },
@@ -189,7 +227,7 @@ function main(params)
 	
 	log("generating: " + parameters.text);
 	
-	var result = generate(parameters.text);	
+	var result = generate(parameters.text);
 	
 	log("finish");
 	
