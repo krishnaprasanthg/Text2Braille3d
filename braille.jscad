@@ -156,7 +156,7 @@ function generate(text)
 	
 	var theCharacters = new Array();
 	
-	var offset = new CSG.Vector3D([parameters.plate_margin, -parameters.plate_margin, 0]);
+	var offset = new CSG.Vector3D(parameters.plate_margin, -parameters.plate_margin, 0);
 	
 	for (var c=0; c < text.length; c++)
 	{
@@ -183,11 +183,11 @@ function generate(text)
 			textWidth = Math.max(textWidth, lineWidth);
 		
 		var characterDots = characterByCode(charCode)
-		var position = offset.plus(new CSG.Vector3D([parameters.form_distance * (lineWidth-1), parameters.line_height * -(numLines-1), 0]));
+		var position = offset.plus(new CSG.Vector3D(parameters.form_distance * (lineWidth-1), parameters.line_height * -(numLines-1), 0));
 		for (var cp=0; cp < characterDots.length; cp++)
-			characterDots[cp].translate(position);
+			characterDots[cp] = characterDots[cp].translate([position.x, position.y, position.z]);
 		
-		theCharacters.concat(characterDots);
+		theCharacters = theCharacters.concat(characterDots);
 	}
 	
 	var marginFactor = [(parameters.plate_margin*2)/parameters.form_distance, (parameters.plate_margin*2)/parameters.line_height];
