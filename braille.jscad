@@ -130,11 +130,11 @@ function characterByCode(charCode)
 
 function characterByDots(dots)
 {
-	var theCharacter = new CSG();//form_base();
+	var theCharacter = new Array(dots.length);//form_base();
 	
 	for (var i=0; i < dots.length; i++)
 	{
-		theCharacter = theCharacter.union(dot(dots[i][0], dots[i][1]));
+		theCharacter[i] = dot(dots[i][0], dots[i][1]);
 	}
 	
 	return theCharacter;
@@ -153,6 +153,10 @@ function generate(text)
 	
 	//TODO: add $ and lowercase character instead
 	text = text.toLowerCase();
+	
+	var theCharacters = new Array();
+	
+	var offset = new CSG.Vector3D([parameters.plate_margin, -parameters.plate_margin, 0]);
 	
 	for (var c=0; c < text.length; c++)
 	{
@@ -178,16 +182,18 @@ function generate(text)
 		if (charCode > 0)
 			textWidth = Math.max(textWidth, lineWidth);
 		
-		var position = [parameters.form_distance * (lineWidth-1), parameters.line_height * -(numLines-1), 0];
-		var theCharacter = characterByCode(charCode).translate(position);
+		var characterDots = characterByCode(charCode)
+		var position = offset.plus(new CSG.Vector3D([parameters.form_distance * (lineWidth-1), parameters.line_height * -(numLines-1), 0]));
+		for (var cp=0; cp < characterDots.length; cp++)
+			characterDots[cp].translate(position);
 		
-		result = result.union(theCharacter);
+		theCharacters.concat(characterDots);
 	}
 	
-	result = result.translate([parameters.plate_margin, -parameters.plate_margin, 0]);
-	
 	var marginFactor = [(parameters.plate_margin*2)/parameters.form_distance, (parameters.plate_margin*2)/parameters.line_height];
-	result = result.union(form_base().scale([textWidth + marginFactor[0], numLines + marginFactor[1], 1]));
+	result = form_base().scale([textWidth + marginFactor[0], numLines + marginFactor[1], 1]);
+	
+	result = result.union(theCharacters);
 	
 	var dimensions = [textWidth*parameters.form_distance+parameters.plate_margin*2, numLines*parameters.line_height+parameters.plate_margin*2];
 	result = result.translate([-dimensions[0]/2, dimensions[1]/2, 0]);
