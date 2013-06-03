@@ -1,4 +1,5 @@
 var parameters;
+var master_dot = null;
 var characters =
 {
 	" " : 0,
@@ -99,13 +100,22 @@ function union_dot(shape)
 	}
 }
 
+function sized_dot()
+{
+	if (master_dot == null)
+	{
+		var dot = union_dot(parameters.dot_shape);
+		master_dot = dot.scale([parameters.dot_diameter/2, parameters.dot_diameter/2, parameters.dot_height]);
+	}
+	return CSG.fromObject(master_dot);
+}
+
 function dot(x, y)
 {
 	var x_pos = (parameters.form_distance - parameters.dot_distance) / 2 + (x-1) * parameters.dot_distance;
 	var y_pos = -(parameters.line_height - parameters.dot_distance*2) / 2 - (y-1) * parameters.dot_distance;
 	
-	var dot = union_dot(parameters.dot_shape);
-	dot = dot.scale([parameters.dot_diameter/2, parameters.dot_diameter/2, parameters.dot_height]);
+	var dot = sized_dot();
 	dot = dot.translate([x_pos, y_pos, parameters.plate_thickness]);
 	
 	return dot;
