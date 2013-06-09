@@ -216,9 +216,13 @@ function characterByDots(dots)
 	return theCharacter;
 }
 
-
 function generate(text)
 {
+	if (!parameters.upper)
+		text = text.toLowerCase();
+	
+	log("generating: " + text);
+	
 	var result = new CSG();
 	if (text.length == 0)
 		return result;
@@ -227,12 +231,16 @@ function generate(text)
 	var textWidth = 0;
 	var lineWidth = 0;
 	
-	//TODO: add $ and lowercase character instead
-	text = text.toLowerCase();
-	
 	var theCharacters = new Array();
 	
 	var offset = new CSG.Vector3D(parameters.plate_margin, -parameters.plate_margin, 0);
+	
+	// var find = /([\p{Lu}])/g;
+	// var replace = "$\L$1";
+	var find = /([A-ZÄÖÜ])/g;
+	var replace = "$$$1";
+	text = text.replace(find, replace).toLowerCase();
+	log("converting to: " + text);
 	
 	for (var c=0; c < text.length; c++)
 	{
@@ -283,6 +291,7 @@ function getParameterDefinitions()
 {
 	return [
 	{ name: 'text', caption: 'Text', type: 'text', default: 'Hello World' },
+	{ name: 'upper', caption: 'Use uppercase', type: 'bool', default: false },
 	
 	{ name: 'dot_shape', caption: 'Dot shape', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Hemisphere', 'Cylinder', 'Smooth'], default: 'smooth' },
 	{ name: 'dot_distance', caption: 'Dot distance:', type: 'float', default: 2.5 },
@@ -306,9 +315,6 @@ function main(params)
 	log("start");
 	
 	parameters = params;
-	
-	log("generating: " + parameters.text);
-	
 	var result = generate(parameters.text);
 	
 	log("finish");
