@@ -139,39 +139,46 @@ function ring(radius1, radius2, resolution)
 	return rotateZ_extrude(circle, resolution);
 }
 
-function union_dot(shape)
-{
-	if (shape == 'sphere')
-	{
-		dot = CSG.sphere({ center: [0, 0, 0], radius: 1, resolution: parameters.resolution });
-		var sub = CSG.cube({ center: [0, 0, 0], radius: [1.25, 1.25, 1] }).translate([0, 0, -1.05]);
-		return dot.subtract(sub);
-	}
-	else if (shape == 'cylinder')
-	{
-		return CSG.cylinder({ start: [0, 0, -0.05], end: [0, 0, 1], radius: 1, resolution: parameters.resolution });
-	}
-	else if (shape == 'smooth')
-	{
-		var dot = CSG.sphere({ center: [0, 0, 0], radius: 1, resolution: parameters.resolution });
-		var base = CSG.cylinder({ start: [0, 0, -1.05], end: [0, 0, 0], radius: 1.5, resolution: parameters.resolution });
-		dot = dot.union(base).translate([0, 0, 1]).scale([1, 1, 0.5]);
-		var smoother = ring(0.5, 2, parameters.resolution).translate([0, 0, 0.5]);
-		return dot.subtract(smoother);
-	}
-	else
-	{
-		throw new Error("Unknown dot shape '" + parameters.dot_shape + "'");
-		return new CSG();
-	}
-}
-
 function sized_dot()
 {
 	if (master_dot == null)
 	{
-		var dot = union_dot(parameters.dot_shape);
-		master_dot = dot.scale([parameters.dot_diameter/2, parameters.dot_diameter/2, parameters.dot_height]);
+		var dot;
+		if (parameters.dot_shape == 'sphere')
+		{
+			dot = CSG.sphere({ center: [0, 0, 0], radius: 1, resolution: parameters.resolution });
+			var sub = CSG.cube({ center: [0, 0, 0], radius: [1.25, 1.25, 1] }).translate([0, 0, -1.05]);
+			dot = dot.subtract(sub);
+		}
+		else if (parameters.dot_shape == 'cylinder')
+		{
+			return CSG.cylinder({ start: [0, 0, -0.05], end: [0, 0, 1], radius: 1, resolution: parameters.resolution });
+		}
+		else if (parameters.dot_shape == 'smooth')
+		{
+			var dot = CSG.sphere({ center: [0, 0, 1], radius: 1, resolution: parameters.resolution });
+			dot = dot.scale([1, 1, 0.5]);
+		}
+		else
+		{
+			throw new Error("Unknown dot shape '" + parameters.dot_shape + "'");
+			return new CSG();
+		}
+		
+		dot = dot.scale([parameters.dot_diameter/2, parameters.dot_diameter/2, parameters.dot_height]);
+		
+		//final touch of 'smooth' is best done after scaling
+		if (parameters.dot_shape == 'smooth')
+		{
+			var ringRadius1 = parameters.dot_height / 2;
+			var ringRadius2 = parameters.dot_diameter/2 + parameters.dot_height;
+			
+			var base = CSG.cylinder({ start: [0, 0, -0.05], end: [0, 0, ringRadius1], radius: ringRadius2-ringRadius1, resolution: parameters.resolution });
+			var smoother = ring(ringRadius1, ringRadius2, parameters.resolution).translate([0, 0, ringRadius1]);
+			dot = dot.union(base).subtract(smoother);
+		}
+		
+		master_dot = dot;
 	}
 	return CSG.fromObject(master_dot);
 }
