@@ -291,21 +291,21 @@ function getParameterDefinitions()
 {
 	return [
 	{ name: 'text', caption: 'Text', type: 'text', default: 'Hello World' },
-	{ name: 'upper', caption: 'Use uppercase', type: 'bool', default: false },
+	{ name: 'upper', caption: 'Großbuchstaben zulassen', type: 'bool', default: false },
 	
-	{ name: 'dot_shape', caption: 'Dot shape', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Hemisphere', 'Cylinder', 'Smooth'], default: 'smooth' },
-	{ name: 'dot_distance', caption: 'Dot distance:', type: 'float', default: 2.5 },
-	{ name: 'dot_diameter', caption: 'Dot diameter:', type: 'float', default: 1.5 },
-	{ name: 'dot_height', caption: 'Dot height:', type: 'float', default: 0.8 },
+	{ name: 'dot_shape', caption: 'Punktform', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Hemisphere', 'Cylinder', 'Smooth'], default: 'smooth' },
+	{ name: 'dot_distance', caption: 'Punkt-Abstand:', type: 'float', default: 2.5 },
+	{ name: 'dot_diameter', caption: 'Punkt-Durchmesser:', type: 'float', default: 1.5 },
+	{ name: 'dot_height', caption: 'Punkt-Höhe:', type: 'float', default: 0.8 },
 
-	{ name: 'form_distance', caption: 'Form distance:', type: 'float', default: 6.0 },
-	{ name: 'line_height', caption: 'Line height:', type: 'float', default: 10.0 },
+	{ name: 'form_distance', caption: 'Form-Abstand:', type: 'float', default: 6.0 },
+	{ name: 'line_height', caption: 'Zeilen-Höhe:', type: 'float', default: 10.0 },
 
-	{ name: 'max_forms_width', caption: 'Max. forms per line:', type: 'int', default: 6 },
-	{ name: 'plate_thickness', caption: 'Plate thickness:', type: 'float', default: 0.4 },
-	{ name: 'plate_margin', caption: 'Plate margin:', type: 'float', default: 5.0 },
+	{ name: 'max_forms_width', caption: 'Max. Formen per Zeile:', type: 'int', default: 6 },
+	{ name: 'plate_thickness', caption: 'Platten-Stärke:', type: 'float', default: 0.4 },
+	{ name: 'plate_margin', caption: 'Rand:', type: 'float', default: 5.0 },
 
-	{ name: 'resolution', caption: 'Resolution', type: 'int', default: 20 }
+	{ name: 'resolution', caption: 'Auflösung', type: 'int', default: 20 }
 	
 	];
 }
