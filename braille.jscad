@@ -247,6 +247,11 @@ function generate(text)
 	var find = /([A-ZÄÖÜ])/g;
 	var replace = "$$$1";
 	text = text.replace(find, replace).toLowerCase();
+	
+	find = /([\d]+)/g;
+	replace = "#$1";
+	text = text.replace(find, replace);
+	
 	log("converting to: " + text);
 	
 	for (var c=0; c < text.length; c++)
