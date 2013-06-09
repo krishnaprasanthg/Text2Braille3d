@@ -292,6 +292,7 @@ function getParameterDefinitions()
 	return [
 	{ name: 'text', caption: 'Text', type: 'text', default: 'Hello World' },
 	{ name: 'upper', caption: 'Großbuchstaben zulassen', type: 'bool', default: false },
+	{ name: 'resolution', caption: 'Auflösung', type: 'int', default: 20 },
 	
 	{ name: 'dot_shape', caption: 'Punktform', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Hemisphere', 'Cylinder', 'Smooth'], default: 'smooth' },
 	{ name: 'dot_distance', caption: 'Punkt-Abstand:', type: 'float', default: 2.5 },
@@ -304,8 +305,8 @@ function getParameterDefinitions()
 	{ name: 'max_forms_width', caption: 'Max. Formen per Zeile:', type: 'int', default: 6 },
 	{ name: 'plate_thickness', caption: 'Platten-Stärke:', type: 'float', default: 0.4 },
 	{ name: 'plate_margin', caption: 'Rand:', type: 'float', default: 5.0 },
-
-	{ name: 'resolution', caption: 'Auflösung', type: 'int', default: 20 }
+	
+	{ name: 'debug_dot', caption: 'Punkt im Detail', type: 'bool', default: false }
 	
 	];
 }
@@ -315,7 +316,12 @@ function main(params)
 	log("start");
 	
 	parameters = params;
-	var result = generate(parameters.text);
+	
+	var result;
+	if (parameters.debug_dot)
+		result = sized_dot().scale([3, 3, 3]);
+	else
+		result = generate(parameters.text);
 	
 	log("finish");
 	
