@@ -261,7 +261,6 @@ function generate(text)
 			lineWidth %= parameters.max_forms_width;
 		}
 		
-		log(newCharacter);
 		var charCode = characters[newCharacter];
 		
 		if (typeof charCode == "undefined")
@@ -279,6 +278,8 @@ function generate(text)
 			characterDots[cp] = characterDots[cp].translate([position.x, position.y, position.z]);
 		
 		theCharacters = theCharacters.concat(characterDots);
+		
+		log(newCharacter);
 	}
 	
 	var marginFactor = [(parameters.plate_margin*2)/parameters.form_distance, (parameters.plate_margin*2)/parameters.line_height];
