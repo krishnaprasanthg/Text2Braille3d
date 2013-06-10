@@ -107,7 +107,7 @@ function log(text)
 function form_base()
 {
 	var dimensions = [parameters.form_distance/2, parameters.line_height/2, parameters.plate_thickness/2];
-	var offset = [parameters.form_distance/2, -parameters.line_height/2, parameters.plate_thickness/2];
+	var offset = [parameters.form_distance/2, -parameters.line_height/2, -parameters.plate_thickness/2];
 	
 	return CSG.cube({ center: offset, radius: dimensions });
 }
@@ -189,7 +189,7 @@ function dot(x, y)
 	var y_pos = -(parameters.line_height - parameters.dot_distance*2) / 2 - (y-1) * parameters.dot_distance;
 	
 	var dot = sized_dot();
-	dot = dot.translate([x_pos, y_pos, parameters.plate_thickness]);
+	dot = dot.translate([x_pos, y_pos, 0]);
 	
 	return dot;
 }
@@ -293,7 +293,7 @@ function generate(text)
 	result = result.union(theCharacters);
 	
 	var dimensions = [textWidth*parameters.form_distance+parameters.plate_margin*2, numLines*parameters.line_height+parameters.plate_margin*2];
-	result = result.translate([-dimensions[0]/2, dimensions[1]/2, 0]);
+	result = result.translate([-dimensions[0]/2, dimensions[1], 0]).rotateX(90);
 	
 	return result;
 }
