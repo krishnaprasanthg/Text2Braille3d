@@ -225,22 +225,14 @@ function characterByDots(dots)
 
 function generate(text)
 {
+	log("generating: " + text);
+	
 	if (!parameters.upper)
 		text = text.toLowerCase();
-	
-	log("generating: " + text);
 	
 	var result = new CSG();
 	if (text.length == 0)
 		return result;
-	
-	var numLines = 1;
-	var textWidth = 0;
-	var lineWidth = 0;
-	
-	var theCharacters = new Array();
-	
-	var offset = new CSG.Vector3D(parameters.plate_margin, -parameters.plate_margin, 0);
 	
 	// var find = /([\p{Lu}])/g;
 	// var replace = "$\L$1";
@@ -252,11 +244,53 @@ function generate(text)
 	replace = "#$1";
 	text = text.replace(find, replace);
 	
+	
+	find = /(_)/g;
+	replace = "$1$1";
+	text = text.replace(find, replace);
+	
+	find = /(st|au|eu|ei|sch|ch|äu|ie)/g;
+	replace = "_$1_";
+	text = text.replace(find, replace);
+	
 	log("converting to: " + text);
+	
+	
+	var numLines = 1;
+	var textWidth = 0;
+	var lineWidth = 0;
+	
+	var theCharacters = new Array();
+	
+	var offset = new CSG.Vector3D(parameters.plate_margin, -parameters.plate_margin, 0);
+	
+	var isMultiCharForm = false;
+	var multiChars = "";
 	
 	for (var c=0; c < text.length; c++)
 	{
 		var newCharacter = text.charAt(c);
+		
+		var multiChar = newCharacter == '_';
+		if (isMultiCharForm)
+		{
+			if (multiChar)
+			{
+				newCharacter = (multiChars.length == 0) ? "_" : multiChars;
+				isMultiCharForm = false;
+				multiChars = "";
+			}
+			else
+			{
+				multiChars += newCharacter;
+				continue;
+			}
+		}
+		else if (multiChar)
+		{
+			isMultiCharForm = true;
+			continue;
+		}
 		
 		lineWidth++;
 		
