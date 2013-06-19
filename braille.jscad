@@ -156,13 +156,12 @@ function sized_dot()
 		}
 		else if (parameters.dot_shape == 'smooth')
 		{
-			var dot = CSG.sphere({ center: [0, 0, 1], radius: 1, resolution: parameters.resolution });
+			dot = CSG.sphere({ center: [0, 0, 1], radius: 1, resolution: parameters.resolution });
 			dot = dot.scale([1, 1, 0.5]);
 		}
 		else
 		{
 			throw new Error("Unknown dot shape '" + parameters.dot_shape + "'");
-			return new CSG();
 		}
 		
 		dot = dot.scale([parameters.dot_diameter/2, parameters.dot_diameter/2, parameters.dot_height]);
@@ -188,15 +187,15 @@ function dot(x, y)
 	var x_pos = (parameters.form_distance - parameters.dot_distance) / 2 + (x-1) * parameters.dot_distance;
 	var y_pos = -(parameters.line_height - parameters.dot_distance*2) / 2 - (y-1) * parameters.dot_distance;
 	
-	var dot = sized_dot();
-	dot = dot.translate([x_pos, y_pos, 0]);
+	var the_dot = sized_dot();
+	the_dot = the_dot.translate([x_pos, y_pos, 0]);
 	
-	return dot;
+	return the_dot;
 }
 
 function characterByCode(charCode)
 {
-	var dotArray = new Array();
+	var dotArray = [];
 	
 	while (charCode > 0)
 	{
@@ -260,7 +259,7 @@ function generate(text)
 	var textWidth = 0;
 	var lineWidth = 0;
 	
-	var theCharacters = new Array();
+	var theCharacters = [];
 	
 	var offset = new CSG.Vector3D(parameters.plate_margin, -parameters.plate_margin, 0);
 	
@@ -311,7 +310,7 @@ function generate(text)
 		if (charCode > 0)
 			textWidth = Math.max(textWidth, lineWidth);
 		
-		var characterDots = characterByCode(charCode)
+		var characterDots = characterByCode(charCode);
 		var position = offset.plus(new CSG.Vector3D(parameters.form_distance * (lineWidth-1), parameters.line_height * -(numLines-1), 0));
 		for (var cp=0; cp < characterDots.length; cp++)
 			characterDots[cp] = characterDots[cp].translate([position.x, position.y, position.z]);
