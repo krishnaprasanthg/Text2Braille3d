@@ -655,19 +655,20 @@ OpenJsCad.Processor.prototype = {
       that.viewer.setZoom(newzoom);
       that.zoomChangedBySlider=false;
     };
-    this.viewer.onZoomChanged = function() {
-      if(!that.zoomChangedBySlider)
-      {
-        var newzoom = that.viewer.getZoom();
-        that.zoomControl.scrollLeft = newzoom * (10 * that.zoomControl.offsetWidth);
-      }
-    };
+    if(this.viewer != null) {
+      this.viewer.onZoomChanged = function() {
+        if(!that.zoomChangedBySlider)
+        {
+          var newzoom = that.viewer.getZoom();
+          that.zoomControl.scrollLeft = newzoom * (10 * that.zoomControl.offsetWidth);
+        }
+      };
+      //this.zoomControl.scrollLeft = this.viewer.viewpointZ / this.viewer.ZOOM_MAX * this.zoomControl.offsetWidth;
+      this.zoomControl.scrollLeft = this.viewer.viewpointZ / this.viewer.ZOOM_MAX * 
+        (this.zoomControl.scrollWidth - this.zoomControl.offsetWidth);
+    }
 
     this.containerdiv.appendChild(this.zoomControl);
-    //this.zoomControl.scrollLeft = this.viewer.viewpointZ / this.viewer.ZOOM_MAX * this.zoomControl.offsetWidth;
-    this.zoomControl.scrollLeft = this.viewer.viewpointZ / this.viewer.ZOOM_MAX * 
-      (this.zoomControl.scrollWidth - this.zoomControl.offsetWidth);
-
     //end of zoom control
 
     this.errordiv = document.createElement("div");
