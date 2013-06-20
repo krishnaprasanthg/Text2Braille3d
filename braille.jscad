@@ -248,9 +248,12 @@ function generate(text)
 	replace = "$1$1";
 	text = text.replace(find, replace);
 	
-	find = /(st|au|eu|ei|sch|ch|äu|ie)/g;
-	replace = "_$1_";
-	text = text.replace(find, replace);
+	if (parameters.contractions)
+	{
+		find = /(st|au|eu|ei|sch|ch|äu|ie)/g;
+		replace = "_$1_";
+		text = text.replace(find, replace);
+	}
 	
 	log("converting to: " + text);
 	
@@ -338,20 +341,23 @@ function getParameterDefinitions()
 	return [
 	{ name: 'text', caption: 'Text', type: 'text', default: 'Hello World' },
 	{ name: 'upper', caption: 'Großbuchstaben zulassen', type: 'bool', default: false },
-	{ name: 'resolution', caption: 'Auflösung', type: 'int', default: 20 },
+	{ name: 'contractions', caption: 'Kontraktionen', type: 'bool', default: true },
 	
-	{ name: 'dot_shape', caption: 'Punktform', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Hemisphere', 'Cylinder', 'Smooth'], default: 'smooth' },
-	{ name: 'dot_distance', caption: 'Punkt-Abstand:', type: 'float', default: 2.5 },
+	{ name: 'form_size', caption: 'Form-Größe [0-10]:', type: 'float', default: 5.0 },
+  
+	// { name: 'dot_distance', caption: 'Punkt-Abstand:', type: 'float', default: 2.5 },
+	// { name: 'form_distance', caption: 'Form-Abstand:', type: 'float', default: 6.0 },
+	// { name: 'line_height', caption: 'Zeilen-Höhe:', type: 'float', default: 10.0 },
+	
 	{ name: 'dot_diameter', caption: 'Punkt-Durchmesser:', type: 'float', default: 1.5 },
 	{ name: 'dot_height', caption: 'Punkt-Höhe:', type: 'float', default: 0.8 },
-
-	{ name: 'form_distance', caption: 'Form-Abstand:', type: 'float', default: 6.0 },
-	{ name: 'line_height', caption: 'Zeilen-Höhe:', type: 'float', default: 10.0 },
-
+	
 	{ name: 'max_forms_width', caption: 'Max. Formen per Zeile:', type: 'int', default: 6 },
-	{ name: 'plate_thickness', caption: 'Platten-Stärke:', type: 'float', default: 0.4 },
+	{ name: 'plate_thickness', caption: 'Platten-Stärke:', type: 'float', default: 2.0 },
 	{ name: 'plate_margin', caption: 'Rand:', type: 'float', default: 5.0 },
 	
+	{ name: 'resolution', caption: 'Auflösung', type: 'int', default: 20 },
+	{ name: 'dot_shape', caption: 'Punktform', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Hemisphere', 'Cylinder', 'Smooth'], default: 'smooth' },
 	{ name: 'debug_dot', caption: 'Punkt im Detail', type: 'bool', default: false }
 	
 	];
@@ -362,6 +368,11 @@ function main(params)
 	log("start");
 	
 	parameters = params;
+	
+	var formFactor = parameters.form_size / 10.0;
+	parameters.dot_distance = 2.3 + 0.7 * formFactor;
+	parameters.form_distance = parameters.dot_distance * 2.5;
+	parameters.line_height = parameters.dot_distance * 4.0;
 	
 	var result;
 	if (parameters.debug_dot)

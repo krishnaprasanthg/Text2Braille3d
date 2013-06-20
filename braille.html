@@ -4,7 +4,7 @@
 <script type="text/javascript" src="lightgl.js"></script>
 <script type="text/javascript" src="csg.js"></script>
 <script type="text/javascript" src="openjscad.js"></script>
-<script type="text/javascript" src="braille.jscad"></script>
+<script type="text/javascript" src="braille.jscad" charset="utf-8"></script>
 <script type="text/javascript" src="jquery-1.10.1.min.js"></script>
 <style>
 
@@ -54,13 +54,18 @@
 		updateSolid();
 		
 		gProcessor.enableItems();
-		$( "#viewer div.parametersdiv button" )[0].onclick = updateSolid;
+		$("#viewer .parametersdiv button")[0].onclick = updateSolid;
+	}
+	
+	function adaptParameters()
+	{
+		var param_form_size = $("#viewer .parametersdiv .parameterstable tr:eq(3) td:eq(1) input")[0];
+		param_form_size.value = Math.min(Math.max(param_form_size.value, 0.0), 10.0);
 	}
 
 	function updateSolid()
 	{
-		// gProcessor.abort();
-		// gProcessor.clearViewer();
+		adaptParameters();
 		var paramValues = gProcessor.getParamValues();
 		var result = main(paramValues);
 		gProcessor.setCurrentObject(result);
