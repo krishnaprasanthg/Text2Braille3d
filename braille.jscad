@@ -233,17 +233,29 @@ function generate(text)
 	if (text.length == 0)
 		return result;
 	
+	var find;
+	var replace;
+	
+	//we want uniform newlines!
+	find = /\n\r|\r\n|\r/;
+	replace = "\n";
+	text.replace(find, replace);
+	
+	//taking care of upper case characters
 	// var find = /([\p{Lu}])/g;
 	// var replace = "$\L$1";
-	var find = /([A-ZÄÖÜ])/g;
-	var replace = "$$$1";
+	find = /([A-ZÄÖÜ])/g;
+	replace = "$$$1";
 	text = text.replace(find, replace).toLowerCase();
 	
+	//numbers are multiform
 	find = /([\d]+)/g;
 	replace = "#$1";
 	text = text.replace(find, replace);
 	
+	//TODO: insert cancel number form if needed
 	
+	//take care of contractions. they are marked by underlines (_xy_), thus _ needs to be escaped (__)
 	find = /(_)/g;
 	replace = "$1$1";
 	text = text.replace(find, replace);
@@ -293,14 +305,14 @@ function generate(text)
 			isMultiCharForm = true;
 			continue;
 		}
-		
-		lineWidth++;
-		
-		if (lineWidth > parameters.max_forms_width)
+		else if (newCharacter == "\n")
 		{
 			numLines++;
-			lineWidth %= parameters.max_forms_width;
+			lineWidth = 0;
+			continue;
 		}
+		
+		lineWidth++;
 		
 		var charCode = characters[newCharacter];
 		
@@ -339,7 +351,7 @@ function generate(text)
 function getParameterDefinitions()
 {
 	return [
-	{ name: 'text', caption: 'Text', type: 'text', default: 'Hello World' },
+	{ name: 'text', caption: 'Text', type: 'longtext', default: 'a\nb' },
 	{ name: 'upper', caption: 'Großbuchstaben zulassen', type: 'bool', default: false },
 	{ name: 'contractions', caption: 'Kontraktionen', type: 'bool', default: true },
 	
@@ -352,7 +364,6 @@ function getParameterDefinitions()
 	{ name: 'dot_diameter', caption: 'Punkt-Durchmesser:', type: 'float', default: 1.5 },
 	{ name: 'dot_height', caption: 'Punkt-Höhe:', type: 'float', default: 0.8 },
 	
-	{ name: 'max_forms_width', caption: 'Max. Formen per Zeile:', type: 'int', default: 6 },
 	{ name: 'plate_thickness', caption: 'Platten-Stärke:', type: 'float', default: 2.0 },
 	{ name: 'plate_margin', caption: 'Rand:', type: 'float', default: 5.0 },
 	
