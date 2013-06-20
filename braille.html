@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 
 <html><head>
-	<script src="lightgl.js"></script>
-	<script src="csg.js"></script>
-	<script src="openjscad.js"></script>
-	<style>
+<script type="text/javascript" src="lightgl.js"></script>
+<script type="text/javascript" src="csg.js"></script>
+<script type="text/javascript" src="openjscad.js"></script>
+<script type="text/javascript" src="braille.jscad"></script>
+<script type="text/javascript" src="jquery-1.10.1.min.js"></script>
+<style>
 
 	body {
 		font: 14px/20px 'Helvetica Neue Light', HelveticaNeue-Light, 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -34,10 +36,10 @@
 
 	canvas { cursor: move; }
 
-	</style>
-	<link rel="stylesheet" href="openjscad.css" type="text/css">
+</style>
+<link rel="stylesheet" href="openjscad.css" type="text/css">
 
-	<script>
+<script>
 
 	var gProcessor=null;
 
@@ -47,49 +49,34 @@
 	function onload()
 	{
 		gProcessor = new OpenJsCad.Processor(document.getElementById("viewer"));
+		gProcessor.paramDefinitions = getParameterDefinitions();
+		gProcessor.createParamControls();
 		updateSolid();
+		
+		gProcessor.enableItems();
+		$( "#viewer div.parametersdiv button" )[0].onclick = updateSolid;
 	}
 
 	function updateSolid()
 	{
-		gProcessor.setJsCad(document.getElementById('code').value);
+		// gProcessor.abort();
+		// gProcessor.clearViewer();
+		var paramValues = gProcessor.getParamValues();
+		var result = main(paramValues);
+		gProcessor.setCurrentObject(result);
 	}
-	</script>
-	<title>Braille Generator</title>  
+
+</script>
+<title>Braille Generator</title>  
 </head>
 <body onload="onload()">
-	<h1>Braille Generator</h1>
-	<div id="viewer"></div>
-	<h2>Source code</h2>
-	<br><br> 
-	<textarea id="code">
-		// Here we define the user editable parameters: 
-		function getParameterDefinitions()
-		{
-			return [
-			{ name: 'text', caption: 'Text:', type: 'text', default: '' }
-			];
-		}
-
-		function main(params)
-		{
-			if (OpenJsCad.log)
-				OpenJsCad.log("start");
-			
-			var cube = CSG.cube();
-			
-			var result = new CSG();
-			
-			result = result.union(cube);
-			
-			
-			if (OpenJsCad.log)
-				OpenJsCad.log("finish");
-			
-			return result;
-		}
-	</textarea><br>
-	<input type="submit" value="Update" onclick="updateSolid(); return false;">
-	<br><br>
+<h1>Braille Generator</h1>
+<div id="viewer"></div>
+<h2>Source code</h2>
+<br><br> 
+<textarea id="code">
+</textarea><br>
+<input type="submit" value="Update" onclick="updateSolid(); return false;">
+<br><br>
 </body>
 </html>
