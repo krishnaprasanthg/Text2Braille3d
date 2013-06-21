@@ -1,5 +1,5 @@
 var parameters;
-var master_dot = null;
+var master_dot;
 var characters =
 {
 	"a" : 1,	//⠁
@@ -152,7 +152,7 @@ function sized_dot()
 		}
 		else if (parameters.dot_shape == 'cylinder')
 		{
-			return CSG.cylinder({ start: [0, 0, -0.05], end: [0, 0, 1], radius: 1, resolution: parameters.resolution });
+			dot = CSG.cylinder({ start: [0, 0, -0.05], end: [0, 0, 1], radius: 1, resolution: parameters.resolution });
 		}
 		else if (parameters.dot_shape == 'smooth')
 		{
@@ -379,6 +379,7 @@ function main(params)
 	log("start");
 	
 	parameters = params;
+	master_dot = null;
 	
 	var formFactor = parameters.form_size / 10.0;
 	parameters.dot_distance = 2.3 + 0.7 * formFactor;
