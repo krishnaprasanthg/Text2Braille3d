@@ -346,6 +346,19 @@ function generate(text)
 	var dimensions = [textWidth*parameters.form_distance+parameters.plate_margin*2, numLines*parameters.line_height+parameters.plate_margin*2];
 	result = result.translate([-dimensions[0]/2, dimensions[1], 0]).rotateX(90);
 	
+	if (parameters.stands)
+	{
+		var standDiameter = 10.0;
+		var standHeight = 0.3;
+		var bounds = result.getBounds();
+		var standCircle = CSG.cylinder({ start: [0, 0, 0], end: [0, 0, standHeight], radius: standDiameter/2, resolution: parameters.resolution });
+		var stand = CSG.cube({ center: [0, parameters.plate_thickness/2, standHeight/2], radius: [bounds[1].x + standDiameter/2, parameters.plate_thickness/2, standHeight/2] });
+		stand = stand.union(standCircle.translate([bounds[0].x - standDiameter/2, parameters.plate_thickness/2, 0]));
+		stand = stand.union(standCircle.translate([bounds[1].x + standDiameter/2, parameters.plate_thickness/2, 0]));
+		
+		result = result.union(stand);
+	}
+	
 	return result;
 }
 
@@ -367,6 +380,8 @@ function getParameterDefinitions()
 	
 	{ name: 'plate_thickness', caption: 'Platten-Stärke', type: 'float', default: 2.0 },
 	{ name: 'plate_margin', caption: 'Rand', type: 'float', default: 5.0 },
+	
+	{ name: 'stands', caption: 'Stützen generieren', type: 'bool', default: true },
 	
 	{ name: 'resolution', caption: 'Auflösung', type: 'int', default: 16 },
 	{ name: 'dot_shape', caption: 'Punktform', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Hemisphere', 'Cylinder', 'Smooth'], default: 'smooth' },
