@@ -54,10 +54,12 @@
 		gProcessor = new OpenJsCad.Processor(document.getElementById("viewer"));
 		gProcessor.paramDefinitions = getParameterDefinitions();
 		gProcessor.createParamControls();
-		updateSolid();
-		
+		updateParameters();
 		gProcessor.enableItems();
-		$("#viewer .parametersdiv button")[0].onclick = updateSolid;
+		
+		var button = $("#viewer .parametersdiv button")[0];
+		button.innerHTML = "generieren";
+		button.onclick = updateSolid;
 	}
 	
 	function adaptParameters()
@@ -81,11 +83,16 @@
 		resolution += (resolution % 2);
 		param_resolution.value = resolution;
 	}
-
-	function updateSolid()
+	
+	function updateParameters()
 	{
 		adaptParameters();
-		var paramValues = gProcessor.getParamValues();
+		return gProcessor.getParamValues();
+	}
+	
+	function updateSolid()
+	{
+		var paramValues = updateParameters();
 		var result = main(paramValues);
 		gProcessor.setCurrentObject(result);
 	}
@@ -96,11 +103,5 @@
 <body onload="onload()">
 <h1>Braille Generator</h1>
 <div id="viewer"></div>
-<h2>Source code</h2>
-<br><br> 
-<textarea id="code">
-</textarea><br>
-<input type="submit" value="Update" onclick="updateSolid(); return false;">
-<br><br>
 </body>
 </html>

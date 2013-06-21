@@ -354,7 +354,7 @@ function generate(text)
 function getParameterDefinitions()
 {
 	return [
-	{ name: 'text', caption: 'Text', type: 'longtext', default: 'a\nb' },
+	{ name: 'text', caption: 'Text', type: 'longtext', default: 'Hello\nWorld' },
 	{ name: 'upper', caption: 'Großbuchstaben zulassen', type: 'bool', default: false },
 	{ name: 'contractions', caption: 'Kontraktionen', type: 'bool', default: true },
 	
