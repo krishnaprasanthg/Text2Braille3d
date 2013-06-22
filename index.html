@@ -57,6 +57,9 @@
 		updateParameters();
 		gProcessor.enableItems();
 		
+		if (gProcessor.viewer != null)
+			gProcessor.viewer.gl.clearColor(1, 1, 0.97, 1);
+		
 		var button = $("#viewer .parametersdiv button")[0];
 		button.innerHTML = "generieren";
 		button.onclick = updateSolid;
@@ -99,10 +102,10 @@
 	}
 
 </script>
-<title>Braille Generator</title>  
+<title>Text to 3d printable Braille</title>
 </head>
 <body onload="onload()">
-<h1>Braille Generator</h1>
+<h1>Text to 3d printable Braille</h1>
 <div id="viewer"></div>
 </body>
 </html>

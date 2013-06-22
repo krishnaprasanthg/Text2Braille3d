@@ -1,5 +1,10 @@
-var parameters;
-var master_dot;
+var parameters = null;
+var master_dot = null;
+
+var colorDot = [0.2, 0.2, 0.2];
+var colorPlate = [1.0, 1.0, 1.0];
+var colorSupport = [0.7, 1, 0.7];
+
 var characters =
 {
 	"a" : 1,	//⠁
@@ -168,6 +173,7 @@ function sized_dot()
 		}
 		
 		dot = dot.scale([parameters.dot_diameter/2, parameters.dot_diameter/2, parameters.dot_height]);
+		dot = dot.setColor(colorDot[0], colorDot[1], colorDot[2]);
 		
 		//final touch of 'smooth' is best done after scaling
 		if (parameters.dot_shape == 'smooth')
@@ -176,7 +182,9 @@ function sized_dot()
 			var ringRadius2 = parameters.dot_diameter/2 + parameters.dot_height;
 			
 			var base = CSG.cylinder({ start: [0, 0, -0.05], end: [0, 0, ringRadius1], radius: ringRadius2-ringRadius1, resolution: parameters.resolution });
+			base = base.setColor(colorPlate[0], colorPlate[1], colorPlate[2]);
 			var smoother = ring(ringRadius1, ringRadius2, parameters.resolution).translate([0, 0, ringRadius1]);
+			smoother = smoother.setColor(colorPlate[0], colorPlate[1], colorPlate[2]);
 			dot = dot.union(base).subtract(smoother);
 		}
 		
@@ -340,6 +348,7 @@ function generate(text)
 	
 	var marginFactor = [(parameters.plate_margin*2)/parameters.form_distance, (parameters.plate_margin*2)/parameters.line_height];
 	result = form_base().scale([textWidth + marginFactor[0], numLines + marginFactor[1], 1]);
+	result = result.setColor(colorPlate[0], colorPlate[1], colorPlate[2]);
 	
 	result = result.union(theCharacters);
 	
@@ -355,6 +364,7 @@ function generate(text)
 		var stand = CSG.cube({ center: [0, parameters.plate_thickness/2, standHeight/2], radius: [bounds[1].x + standDiameter/2, parameters.plate_thickness/2, standHeight/2] });
 		stand = stand.union(standCircle.translate([bounds[0].x - standDiameter/2, parameters.plate_thickness/2, 0]));
 		stand = stand.union(standCircle.translate([bounds[1].x + standDiameter/2, parameters.plate_thickness/2, 0]));
+		stand = stand.setColor(colorSupport[0], colorSupport[1], colorSupport[2]);
 		
 		result = result.union(stand);
 	}
