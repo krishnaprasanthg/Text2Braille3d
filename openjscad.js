@@ -634,7 +634,7 @@ OpenJsCad.Processor.prototype = {
       this.viewer = new OpenJsCad.Viewer(this.viewerdiv, this.viewerwidth, this.viewerheight, this.initialViewerDistance);
     } catch(e) {
       //      this.viewer = null;
-      this.viewerdiv.innerHTML = "<b><br><br>Error: " + e.toString() + "</b><br><br>OpenJsCad currently requires Google Chrome with WebGL enabled";
+      this.viewerdiv.innerHTML = "<b><br><br>Error: " + e.toString() + "</b><br><br>OpenJsCad currently requires Google Chrome or Firefox with WebGL enabled";
       //      this.viewerdiv.innerHTML = e.toString();
     }
     //Zoom control
