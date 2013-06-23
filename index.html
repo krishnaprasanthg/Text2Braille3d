@@ -14,7 +14,10 @@
 		margin: 0 auto;
 		padding: 10px;
 	}
-
+	canvas {
+		border: 1px solid black;
+		margin: 0px 8px;
+	}
 	pre, code {
 		font: 12px/20px Monaco, monospace;
 		border: 1px solid #CCC;
@@ -59,6 +62,8 @@
 		
 		if (gProcessor.viewer != null)
 			gProcessor.viewer.gl.clearColor(1, 1, 0.97, 1);
+		
+		$("#viewer .viewer")[0].style.backgroundColor = "white";
 		
 		var button = $("#viewer .parametersdiv button")[0];
 		button.innerHTML = "generieren";
