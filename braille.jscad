@@ -393,17 +393,13 @@ function getParameterDefinitions()
 		{ name: 'plate_thickness', caption: 'Platten-Stärke', type: 'float', default: 2.0 },
 		{ name: 'plate_margin', caption: 'Rand', type: 'float', default: 5.0 },
 	
-		{ name: 'stands', caption: 'Stützen generieren', type: 'bool', default: true }
+		{ name: 'stands', caption: 'Stützen generieren', type: 'bool', default: true },
+
+		{ name: 'resolution', caption: 'Auflösung', type: 'int', default: 16, visible: debug },
+		{ name: 'dot_shape', caption: 'Punktform', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Halbkugel', 'Zylinder', 'Nahtlos'], default: 'smooth' , visible: debug },
+		{ name: 'debug_dot', caption: 'Punkt im Detail', type: 'bool', default: false, visible: debug }
 	];
 	
-	if (debug)
-	{
-		parameterDefinitions = parameterDefinitions.concat( [
-			{ name: 'resolution', caption: 'Auflösung', type: 'int', default: 16 },
-			{ name: 'dot_shape', caption: 'Punktform', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Halbkugel', 'Zylinder', 'Nahtlos'], default: 'smooth' },
-			{ name: 'debug_dot', caption: 'Punkt im Detail', type: 'bool', default: false }
-		]);
-	}
 	return parameterDefinitions;
 }
 

@@ -43,7 +43,7 @@
 	canvas { cursor: move; }
 
 </style>
-<link rel="stylesheet" href="openjscad.css" type="text/css">
+<link rel="stylesheet" href="openjscad.css" type="text/css" />
 
 <script>
 
@@ -55,22 +55,37 @@
 	function onload()
 	{
 		gProcessor = new OpenJsCad.Processor(document.getElementById("viewer"));
-		gProcessor.paramDefinitions = getParameterDefinitions();
-		gProcessor.createParamControls();
-		updateParameters();
-		gProcessor.enableItems();
+		jQuery.get('braille.jscad', function(data)
+		{
+			gProcessor.setJsCad(data);
+		});
 		
+		adaptControls();
+	}
+	
+	function adaptControls()
+	{
 		if (gProcessor.viewer != null)
 			gProcessor.viewer.gl.clearColor(1, 1, 0.97, 1);
 		
 		$("#viewer .viewer")[0].style.backgroundColor = "white";
+		$("#viewer .parametersdiv button")[0].onclick = parseParameters;
 		
-		var button = $("#viewer .parametersdiv button")[0];
-		button.innerHTML = "generieren";
-		button.onclick = updateSolid;
+		setLanguage("german");
 	}
 	
-	function adaptParameters()
+	function setLanguage(lang)
+	{
+		if (lang == "german")
+		{
+			// var $statusBar = $("#viewer .statusdiv");
+			// $statusBar.children("span")[0].innerHTML = "Fertig."
+			
+			$("#viewer .parametersdiv button")[0].innerHTML = "generieren";
+		}
+	}
+	
+	function parseParameters()
 	{
 		var param_form_size = $("#viewer .parametersdiv .parameterstable tr:eq(3) td:eq(1) input")[0];
 		param_form_size.value = Math.min(Math.max(param_form_size.value, 0.0), 10.0);
@@ -90,20 +105,8 @@
 		resolution = Math.min(Math.max(param_resolution.value, 10), 30);
 		resolution += (resolution % 2);
 		param_resolution.value = resolution;
-	}
-	
-	function updateParameters()
-	{
-		adaptParameters();
-		return gProcessor.getParamValues();
-	}
-	
-	function updateSolid()
-	{
-		var paramValues = updateParameters();
-		var result = main(paramValues);
-		gProcessor.setCurrentObject(result);
-		gProcessor.enableItems();
+		
+		gProcessor.rebuildSolid();
 	}
 
 </script>
