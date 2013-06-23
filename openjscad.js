@@ -116,6 +116,10 @@ OpenJsCad.Viewer = function(containerelement, width, height, initialdepth) {
       var factor = Math.pow(1.003, -wheelDelta);
       var coeff = _this.getZoom();
       coeff *= factor;
+      if (wheelDelta < 0 && coeff == 0.0)
+      {
+    	  coeff = 0.0005;
+      }
       _this.setZoom(coeff);
     }
   };
