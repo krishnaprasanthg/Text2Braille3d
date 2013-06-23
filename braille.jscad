@@ -1,3 +1,4 @@
+var debug = false;
 var parameters = null;
 var master_dot = null;
 
@@ -105,7 +106,7 @@ var characters =
 
 function log(text)
 {
-	if (OpenJsCad.log)
+	if (OpenJsCad.log && debug)
 		OpenJsCad.log(text);
 }
 
@@ -235,7 +236,7 @@ function characterByDots(dots)
 
 function generate(text)
 {
-	log("generating: " + text);
+	log("generating:\n" + text);
 	
 	if (!parameters.upper)
 		text = text.toLowerCase();
@@ -278,7 +279,7 @@ function generate(text)
 		text = text.replace(find, replace);
 	}
 	
-	log("converting to: " + text);
+	log("converting to:\n" + text);
 	
 	
 	var numLines = 1;
@@ -320,6 +321,7 @@ function generate(text)
 		{
 			numLines++;
 			lineWidth = 0;
+			log("\n");
 			continue;
 		}
 		
@@ -329,7 +331,7 @@ function generate(text)
 		
 		if (typeof charCode == "undefined")
 		{
-			log("invalid character: " + newCharacter);
+			log("invalid character: '" + newCharacter + "'");
 			charCode = characters["?"];
 		}
 		
@@ -376,28 +378,33 @@ function generate(text)
 
 function getParameterDefinitions()
 {
-	return [
-	{ name: 'text', caption: 'Text', type: 'longtext', default: 'Hello\nWorld' },
-	{ name: 'upper', caption: 'Großbuchstaben zulassen', type: 'bool', default: false },
-	{ name: 'contractions', caption: 'Kontraktionen', type: 'bool', default: true },
+	var parameterDefinitions = [
+		{ name: 'text', caption: 'Text', type: 'longtext', default: 'Hello\nWorld' },
+		{ name: 'upper', caption: 'Großbuchstaben zulassen', type: 'bool', default: false },
+		{ name: 'contractions', caption: 'Kontraktionen', type: 'bool', default: true },
 	
-	{ name: 'form_size', caption: 'Form-Größe [0 - 10]', type: 'float', default: 5.0 },
-	// { name: 'dot_distance', caption: 'Punkt-Abstand', type: 'float', default: 2.5 },
-	// { name: 'form_distance', caption: 'Form-Abstand', type: 'float', default: 6.0 },
-	// { name: 'line_height', caption: 'Zeilen-Höhe', type: 'float', default: 10.0 },
-  	{ name: 'dot_height', caption: 'Punkt-Höhe [0.5 - 0.8]', type: 'float', default: 0.7 },
-	{ name: 'dot_diameter', caption: 'Punkt-Durchmesser [1.4 - 1.6]', type: 'float', default: 1.5 },
+		{ name: 'form_size', caption: 'Form-Größe [0 - 10]', type: 'float', default: 5.0 },
+		// { name: 'dot_distance', caption: 'Punkt-Abstand', type: 'float', default: 2.5 },
+		// { name: 'form_distance', caption: 'Form-Abstand', type: 'float', default: 6.0 },
+		// { name: 'line_height', caption: 'Zeilen-Höhe', type: 'float', default: 10.0 },
+	  	{ name: 'dot_height', caption: 'Punkt-Höhe [0.5 - 0.8]', type: 'float', default: 0.7 },
+		{ name: 'dot_diameter', caption: 'Punkt-Durchmesser [1.4 - 1.6]', type: 'float', default: 1.5 },
 	
-	{ name: 'plate_thickness', caption: 'Platten-Stärke', type: 'float', default: 2.0 },
-	{ name: 'plate_margin', caption: 'Rand', type: 'float', default: 5.0 },
+		{ name: 'plate_thickness', caption: 'Platten-Stärke', type: 'float', default: 2.0 },
+		{ name: 'plate_margin', caption: 'Rand', type: 'float', default: 5.0 },
 	
-	{ name: 'stands', caption: 'Stützen generieren', type: 'bool', default: true },
-	
-	{ name: 'resolution', caption: 'Auflösung', type: 'int', default: 16 },
-	{ name: 'dot_shape', caption: 'Punktform', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Hemisphere', 'Cylinder', 'Smooth'], default: 'smooth' },
-	{ name: 'debug_dot', caption: 'Punkt im Detail', type: 'bool', default: false }
-	
+		{ name: 'stands', caption: 'Stützen generieren', type: 'bool', default: true }
 	];
+	
+	if (debug)
+	{
+		parameterDefinitions = parameterDefinitions.concat( [
+			{ name: 'resolution', caption: 'Auflösung', type: 'int', default: 16 },
+			{ name: 'dot_shape', caption: 'Punktform', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Halbkugel', 'Zylinder', 'Nahtlos'], default: 'smooth' },
+			{ name: 'debug_dot', caption: 'Punkt im Detail', type: 'bool', default: false }
+		]);
+	}
+	return parameterDefinitions;
 }
 
 function main(params)
