@@ -258,22 +258,23 @@ function generate(text)
 		//the regex unicode matching for uppercase letters (not supported in js):
 		// var find = /([\p{Lu}])/g;
 		// var replace = "$\L$1";
-	
+		
 		//a WHOLE WORD in uppercase letters is prefaced by the character >
-		find = /(\s|^)([A-ZÄÖÜ]+)(?=\s|$)/g;
-		replace = "$1>$2";
-		text = text.replace(find, replace).toLowerCase();
-	
+		//TODO: make this combinable with single uppercase letters!
+		// find = /(\s|^)([A-ZÄÖÜ]+)(?=\s|$)/g;
+		// replace = "$1>$2";
+		// text = text.replace(find, replace).toLowerCase();
+		
 		//single uppercase letters are prefaced by the character $
 		find = /([A-ZÄÖÜ])/g;
 		replace = "$$$1";
 		text = text.replace(find, replace).toLowerCase();
-	
+		
 		//numbers are prefaced by the character #
 		find = /([\d]+)/g;
 		replace = "#$1";
 		text = text.replace(find, replace);
-	
+		
 		//is the number followed by a character between 'a' and 'j', a ' is inserted to avoid confusion
 		find = /([\d])(?=[a-j])/g;
 		replace = "$1'";
