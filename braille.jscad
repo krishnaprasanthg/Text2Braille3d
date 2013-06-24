@@ -352,8 +352,8 @@ function generate(text)
 		
 		if (typeof charCode == "undefined")
 		{
-			log("invalid character: '" + newCharacter + "'");
 			charCode = characters["?"];
+			throw new Error("Unsupported character '" + newCharacter + "'");
 		}
 		
 		if (charCode > 0)
