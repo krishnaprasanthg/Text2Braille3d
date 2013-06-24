@@ -278,6 +278,13 @@ function generate(text)
 		find = /([\d])(?=[a-j])/g;
 		replace = "$1'";
 		text = text.replace(find, replace);
+		
+		//replace quotes with opening and closing quotes
+		find = /"([^"]*)"/g;
+		replace = "»$1«";
+		// find = /(\s|^)"([^"]*)"(?=\s|$)/g;		//unsure about this
+		// replace = "$1»$2«";
+		text = text.replace(find, replace);
 	}
 	
 	//take care of contractions. they are marked by underlines (_xy_), thus _ needs to be escaped (__)
