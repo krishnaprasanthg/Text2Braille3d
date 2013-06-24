@@ -253,30 +253,31 @@ function generate(text)
 	replace = "\n";
 	text.replace(find, replace);
 	
-	//the regex unicode matching for uppercase letters (not supported in js):
-	// var find = /([\p{Lu}])/g;
-	// var replace = "$\L$1";
+	if (!parameters.straight)
+	{
+		//the regex unicode matching for uppercase letters (not supported in js):
+		// var find = /([\p{Lu}])/g;
+		// var replace = "$\L$1";
 	
-	//a WHOLE WORD in uppercase letters is prefaced by the character >
-	find = /(\s|^)([A-ZÄÖÜ]+)(?=\s|$)/g;
-	replace = "$1>$2";
-	text = text.replace(find, replace).toLowerCase();
+		//a WHOLE WORD in uppercase letters is prefaced by the character >
+		find = /(\s|^)([A-ZÄÖÜ]+)(?=\s|$)/g;
+		replace = "$1>$2";
+		text = text.replace(find, replace).toLowerCase();
 	
-	//single uppercase letters are prefaced by the character $
-	find = /([A-ZÄÖÜ])/g;
-	replace = "$$$1";
-	text = text.replace(find, replace).toLowerCase();
+		//single uppercase letters are prefaced by the character $
+		find = /([A-ZÄÖÜ])/g;
+		replace = "$$$1";
+		text = text.replace(find, replace).toLowerCase();
 	
-	//numbers are prefaced by the character #
-	find = /([\d]+)/g;
-	replace = "#$1";
-	text = text.replace(find, replace);
+		//numbers are prefaced by the character #
+		find = /([\d]+)/g;
+		replace = "#$1";
+		text = text.replace(find, replace);
 	
-	//is the number followed by a character between 'a' and 'j', a ' is inserted to avoid confusion
-	find = /([\d])(?=[a-j])/g;
-	replace = "$1'";
-	text = text.replace(find, replace);
-	
+		//is the number followed by a character between 'a' and 'j', a ' is inserted to avoid confusion
+		find = /([\d])(?=[a-j])/g;
+		replace = "$1'";
+		text = text.replace(find, replace);
 	}
 	
 	//take care of contractions. they are marked by underlines (_xy_), thus _ needs to be escaped (__)
@@ -394,6 +395,7 @@ function getParameterDefinitions()
 		{ name: 'text', caption: 'Text', type: 'longtext', default: 'Hello\nWorld' },
 		{ name: 'upper', caption: 'Großbuchstaben zulassen', type: 'bool', default: false },
 		{ name: 'contractions', caption: 'Kontraktionen', type: 'bool', default: true },
+		{ name: 'straight', caption: 'Direkte Konvertierung', type: 'bool', default: false },
 	
 		{ name: 'form_size', caption: 'Form-Größe [0 - 10]', type: 'float', default: 5.0 },
 		// { name: 'dot_distance', caption: 'Punkt-Abstand', type: 'float', default: 2.5 },
