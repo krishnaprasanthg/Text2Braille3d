@@ -248,7 +248,7 @@ function generate(text)
 	var find;
 	var replace;
 	
-	//we want uniform newlines!
+	//we want uniform newlines for further processing!
 	find = /\n\r|\r\n|\r/;
 	replace = "\n";
 	text.replace(find, replace);
@@ -260,7 +260,7 @@ function generate(text)
 	replace = "$$$1";
 	text = text.replace(find, replace).toLowerCase();
 	
-	//numbers are multiform
+	//numbers are prefaced by the character #
 	find = /([\d]+)/g;
 	replace = "#$1";
 	text = text.replace(find, replace);

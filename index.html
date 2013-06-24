@@ -57,7 +57,7 @@
 		gProcessor = new OpenJsCad.Processor(document.getElementById("viewer"));
 		jQuery.get('braille.jscad', function(data)
 		{
-			gProcessor.setJsCad(data);
+			gProcessor.setJsCad(data, "braille.jscad");
 		});
 		
 		adaptControls();
