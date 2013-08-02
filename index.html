@@ -48,6 +48,8 @@
 <script>
 
 	var gProcessor=null;
+	var detailsOffset = 4;
+	var detailsAmount = 6;
 
 	// Show all exceptions to the user:
 	OpenJsCad.AlertUserOfUncaughtExceptions();
@@ -58,6 +60,7 @@
 		jQuery.get('braille.jscad', function(data)
 		{
 			gProcessor.setJsCad(data, "braille.jscad");
+			showDetails(false);
 		});
 		
 		adaptControls();
@@ -71,6 +74,10 @@
 		$("#viewer .viewer")[0].style.backgroundColor = "white";
 		$("#viewer .parametersdiv button")[0].onclick = parseParameters;
 		
+		var moreElement = "<hr/><p><a id='more'></a></p>";
+		
+		$("#viewer .parametersdiv .parameterstable").after(moreElement);
+		
 		setLanguage("german");
 	}
 	
@@ -81,8 +88,22 @@
 			// var $statusBar = $("#viewer .statusdiv");
 			// $statusBar.children("span")[0].innerHTML = "Fertig."
 			
-			$("#viewer .parametersdiv button")[0].innerHTML = "generieren";
+			$("#viewer .parametersdiv button")[0].innerHTML = "3D Modell generieren";
 		}
+	}
+	
+	function showDetails(show)
+	{
+		var tableRows = $("#viewer .parametersdiv .parameterstable tr");
+		
+		for (var i=detailsOffset; i < tableRows.length && i < detailsOffset+detailsAmount; i++)
+		{
+			tableRows[i].style.display = (show) ? "table-row" : "none";
+		}
+		
+		var moreLink = $("#more")[0];
+		moreLink.innerHTML = (show) ? "simple Einstellungen" : "Details einstellen";
+		moreLink.href = "javascript:showDetails(" + !show + ");";
 	}
 	
 	function parseParameters()
