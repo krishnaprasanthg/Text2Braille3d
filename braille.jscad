@@ -402,26 +402,26 @@ function getParameterDefinitions()
 	var debug = false;
 	
 	var parameterDefinitions = [
-		{ name: 'text', caption: 'Text', type: 'longtext', default: 'Hello\nWorld' },
-		{ name: 'upper', caption: 'Großbuchstaben zulassen', type: 'bool', default: false },
-		{ name: 'contractions', caption: 'Kontraktionen', type: 'bool', default: true },
-		{ name: 'straight', caption: 'Direkte Konvertierung', type: 'bool', default: false },
+		{ name: 'text', caption: 'Text', type: 'longtext', initial: 'Hello\nWorld' },
+		{ name: 'upper', caption: 'Großbuchstaben zulassen', type: 'bool', initial: false },
+		{ name: 'contractions', caption: 'Kontraktionen', type: 'bool', initial: true },
+		{ name: 'straight', caption: 'Direkte Konvertierung', type: 'bool', initial: false },
 	
-		{ name: 'form_size', caption: 'Form-Größe [0 - 10]', type: 'float', default: 5.0 },
-		// { name: 'dot_distance', caption: 'Punkt-Abstand', type: 'float', default: 2.5 },
-		// { name: 'form_distance', caption: 'Form-Abstand', type: 'float', default: 6.0 },
-		// { name: 'line_height', caption: 'Zeilen-Höhe', type: 'float', default: 10.0 },
-	  	{ name: 'dot_height', caption: 'Punkt-Höhe [0.5 - 0.8]', type: 'float', default: 0.7 },
-		{ name: 'dot_diameter', caption: 'Punkt-Durchmesser [1.4 - 1.6]', type: 'float', default: 1.5 },
+		{ name: 'form_size', caption: 'Form-Größe [0 - 10]', type: 'float', initial: 5.0 },
+		// { name: 'dot_distance', caption: 'Punkt-Abstand', type: 'float', initial: 2.5 },
+		// { name: 'form_distance', caption: 'Form-Abstand', type: 'float', initial: 6.0 },
+		// { name: 'line_height', caption: 'Zeilen-Höhe', type: 'float', initial: 10.0 },
+	  	{ name: 'dot_height', caption: 'Punkt-Höhe [0.5 - 0.8]', type: 'float', initial: 0.7 },
+		{ name: 'dot_diameter', caption: 'Punkt-Durchmesser [1.4 - 1.6]', type: 'float', initial: 1.5 },
 	
-		{ name: 'plate_thickness', caption: 'Platten-Stärke', type: 'float', default: 2.0 },
-		{ name: 'plate_margin', caption: 'Rand', type: 'float', default: 5.0 },
+		{ name: 'plate_thickness', caption: 'Platten-Stärke', type: 'float', initial: 2.0 },
+		{ name: 'plate_margin', caption: 'Rand', type: 'float', initial: 5.0 },
 	
-		{ name: 'stands', caption: 'Stützen generieren', type: 'bool', default: true },
+		{ name: 'stands', caption: 'Stützen generieren', type: 'bool', initial: true },
 
-		{ name: 'resolution', caption: 'Auflösung', type: 'int', default: 16, visible: debug },
-		{ name: 'dot_shape', caption: 'Punktform', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Halbkugel', 'Zylinder', 'Nahtlos'], default: 'smooth' , visible: debug },
-		{ name: 'debug_dot', caption: 'Punkt im Detail', type: 'bool', default: false, visible: debug }
+		{ name: 'resolution', caption: 'Auflösung', type: 'int', initial: 16, visible: debug },
+		{ name: 'dot_shape', caption: 'Punktform', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Halbkugel', 'Zylinder', 'Nahtlos'], initial: 'smooth' , visible: debug },
+		{ name: 'debug_dot', caption: 'Punkt im Detail', type: 'bool', initial: false, visible: debug }
 	];
 	
 	return parameterDefinitions;
