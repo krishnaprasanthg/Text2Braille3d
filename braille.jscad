@@ -399,6 +399,8 @@ function generate(text)
 
 function getParameterDefinitions()
 {
+	var debug = false;
+	
 	var parameterDefinitions = [
 		{ name: 'text', caption: 'Text', type: 'longtext', default: 'Hello\nWorld' },
 		{ name: 'upper', caption: 'Großbuchstaben zulassen', type: 'bool', default: false },
