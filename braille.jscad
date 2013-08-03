@@ -4,6 +4,7 @@ var master_dot = null;
 
 var colorDot = [0.2, 0.2, 0.2];
 var colorPlate = [1.0, 1.0, 1.0];
+var colorInside = [0.0, 0.0, 0.0];
 var colorSupport = [0.7, 1, 0.7];
 
 var characters =
@@ -375,6 +376,13 @@ function generate(text)
 	
 	result = result.union(theCharacters);
 	
+	if (parameters.reference_corner && parameters.plate_margin > 0)
+	{
+		var cornerCut = CSG.cube({ center: [0, 0, 0], radius: [parameters.plate_margin, parameters.plate_margin/2, parameters.plate_thickness] }).rotateZ(45);
+		cornerCut = cornerCut.setColor(colorInside[0], colorInside[1], colorInside[2]);
+		result = result.subtract(cornerCut);
+	}
+	
 	var dimensions = [textWidth*parameters.form_distance+parameters.plate_margin*2, numLines*parameters.line_height+parameters.plate_margin*2];
 	result = result.translate([-dimensions[0]/2, dimensions[1], 0]).rotateX(90);
 	
@@ -417,6 +425,7 @@ function getParameterDefinitions()
 		{ name: 'plate_thickness', caption: 'Platten-Stärke', type: 'float', initial: 2.0 },
 		{ name: 'plate_margin', caption: 'Rand', type: 'float', initial: 5.0 },
 	
+		{ name: 'reference_corner', caption: 'Referenz Eck', type: 'bool', initial: true },
 		{ name: 'stands', caption: 'Stützen generieren', type: 'bool', initial: true },
 
 		{ name: 'resolution', caption: 'Auflösung', type: 'int', initial: 16, visible: debug },
