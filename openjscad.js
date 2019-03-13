@@ -801,7 +801,7 @@ OpenJsCad.Processor.prototype = {
     this.parametersdiv = document.createElement("div");
     this.parametersdiv.className = "parametersdiv";
     var headerdiv = document.createElement("div");
-    headerdiv.innerText = "Parameters:";
+    headerdiv.innerText = "Parâmetros:";
     headerdiv.className = "header";
     this.parametersdiv.appendChild(headerdiv);
     this.parameterstable = document.createElement("table");

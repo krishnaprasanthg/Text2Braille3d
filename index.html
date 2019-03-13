@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 
-<html><head>
+<html lang="pt-BR">	
+<head>
+
+<meta charset="UTF-8">
+
 <script type="text/javascript" src="lightgl.js"></script>
 <script type="text/javascript" src="csg.js"></script>
 <script type="text/javascript" src="openjscad.js"></script>
@@ -78,7 +82,7 @@
 		
 		$("#viewer .parametersdiv .parameterstable").after(moreElement);
 		
-		setLanguage("german");
+		setLanguage("pt-br");
 	}
 	
 	function setLanguage(lang)
@@ -89,7 +93,11 @@
 			// $statusBar.children("span")[0].innerHTML = "Fertig."
 			
 			$("#viewer .parametersdiv button")[0].innerHTML = "3D Modell generieren";
+
+		} else if (lang == "pt-br") {
+			$("#viewer .parametersdiv button")[0].innerHTML = "Gerar modelo 3D";
 		}
+
 	}
 	
 	function showDetails(show)
@@ -102,25 +110,31 @@
 		}
 		
 		var moreLink = $("#more")[0];
-		moreLink.innerHTML = (show) ? "simple Einstellungen" : "Details einstellen";
+		moreLink.innerHTML = (show) ? "Modo simples" : "Modo detalhado";
 		moreLink.href = "javascript:showDetails(" + !show + ");";
 	}
 	
 	function parseParameters()
 	{
-		var param_form_size = $("#viewer .parametersdiv .parameterstable tr:eq(4) td:eq(1) input")[0];
-		param_form_size.value = Math.min(Math.max(param_form_size.value, 0.0), 10.0);
+		// var param_form_size = $("#viewer .parametersdiv .parameterstable tr:eq(4) td:eq(1) input")[0];
+		// param_form_size.value = Math.min(Math.max(param_form_size.value, 0.0), 10.0);
+
+		// var param_dot_dist = $("#viewer .parametersdiv .parameterstable tr:eq(5) td:eq(1) input")[0];
+		// param_dot_dist.value = Math.min(Math.max(param_dot_dist.value, 0.5), 3.0);
 		
-		var param_dot_height = $("#viewer .parametersdiv .parameterstable tr:eq(5) td:eq(1) input")[0];
-		param_dot_height.value = Math.min(Math.max(param_dot_height.value, 0.5), 0.8);
+		// var param_dot_height = $("#viewer .parametersdiv .parameterstable tr:eq(6) td:eq(1) input")[0];
+		// param_dot_height.value = Math.min(Math.max(param_dot_height.value, 0.5), 0.8);
+
+		// var param_dot_height = $("#viewer .parametersdiv .parameterstable tr:eq(7) td:eq(1) input")[0];
+		// param_dot_height.value = Math.min(Math.max(param_dot_height.value, 0.5), 3.0);
 		
-		var param_dot_diameter = $("#viewer .parametersdiv .parameterstable tr:eq(6) td:eq(1) input")[0];
-		param_dot_diameter.value = Math.min(Math.max(param_dot_diameter.value, 1.4), 1.6);
+		// var param_dot_diameter = $("#viewer .parametersdiv .parameterstable tr:eq(8) td:eq(1) input")[0];
+		// param_dot_diameter.value = Math.min(Math.max(param_dot_diameter.value, 1.4), 2.6);
 		
-		var param_plate_thickness = $("#viewer .parametersdiv .parameterstable tr:eq(7) td:eq(1) input")[0];
-		param_plate_thickness.value = Math.max(param_plate_thickness.value, 0.0);
+		// var param_plate_thickness = $("#viewer .parametersdiv .parameterstable tr:eq(9) td:eq(1) input")[0];
+		// param_plate_thickness.value = Math.max(param_plate_thickness.value, 0.0);
 		
-		var param_resolution = $("#viewer .parametersdiv .parameterstable tr:eq(10) td:eq(1) input")[0];
+		var param_resolution = $("#viewer .parametersdiv .parameterstable tr:eq(11) td:eq(1) input")[0];
 		var isnumber = !isNaN(parseInt(param_resolution.value)) && isFinite(param_resolution.value);
 		var resolution = (isnumber) ? parseInt(param_resolution.value) : 0;
 		resolution = Math.min(Math.max(param_resolution.value, 10), 30);

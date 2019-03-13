@@ -36,20 +36,6 @@ var characters =
 	"y" : 13456,//⠽
 	"z" : 1356,	//⠵
 
-	"ä" : 345,	//⠜
-	"ö" : 246,	//⠪
-	"ü" : 1256,	//⠳
-	"ß" : 2346,	//⠮
-	
-	"st" : 23456,//⠾
-	"au" : 16,	//⠡
-	"eu" : 126,	//⠣
-	"ei" : 146,	//⠩
-	"ch" : 1456,//⠹
-	"sch": 156,	//⠱
-	"äu" : 34,	//⠌
-	"ie" : 346,	//⠬
-	
 	"1" : 1,	//⠁
 	"2" : 12,	//⠃
 	"3" : 14,	//⠉
@@ -61,16 +47,24 @@ var characters =
 	"9" : 24,	//⠊
 	"0" : 245,	//⠚
 	
-	"1." : 2,	//⠂
-	"2." : 23,	//⠆
-	"3." : 25,	//⠒
-	"4." : 256,	//⠲
-	"5." : 26,	//⠢
-	"6." : 235,	//⠖
-	"7." : 2356,//⠶
-	"8." : 236,	//⠦
-	"9." : 35,	//⠔
-	"0." : 356,	//⠴
+	"ç" : 12346,  // 
+	"é" : 123456,
+	"á" : 12356,
+	"è" : 2346,
+	"ú" : 23456,
+	"â" : 16,
+	"ê" : 126,
+	"ì" : 146,
+	"ô" : 1456,
+	"@" : 156,
+	"à" : 1246,
+	"ñ" : 12456,
+	"ü" : 1256,
+	"õ" : 246,
+	"w" : 2456,
+	"í" : 34,
+	"ã" : 345,
+	"ó" : 346,
 	
 	"&" : 12346,//⠯
 	"%" : 123456,//⠿
@@ -97,12 +91,14 @@ var characters =
 	"*" : 35,	//⠔
 	"/" : 256,	//⠲
 	"?" : 26,	//⠢
-	"'" : 6,	//⠠
-	'"' : 4,	//⠈
+	//"'" : 6,	//⠠
+	//'"' : 4,	//⠈
 	"_" : 456,	//⠸
 	"~" : 5,	//⠐
 	"§" : 346,	//⠬
-	" " : 0		//⠀
+	" " : 0,	//⠀
+	"º" : 356,
+	"|" : 456
 };
 
 function log(text)
@@ -407,30 +403,30 @@ function generate(text)
 
 function getParameterDefinitions()
 {
-	var debug = false;
+	var debug = true;
 	
 	var parameterDefinitions = [
-		{ name: 'text', caption: 'Text', type: 'longtext', initial: 'Hello\nWorld' },
-		{ name: 'upper', caption: 'Großbuchstaben zulassen', type: 'bool', initial: false },
-		{ name: 'contractions', caption: 'Kontraktionen', type: 'bool', initial: true },
-		{ name: 'straight', caption: 'Direkte Konvertierung', type: 'bool', initial: false },
+		{ name: 'text', caption: 'Texto', type: 'longtext', initial: 'Olá\nMundo' },
+		{ name: 'upper', caption: 'Maiúsculo', type: 'bool', initial: false },
+		{ name: 'contractions', caption: 'Contrações', type: 'bool', initial: true },
+		{ name: 'straight', caption: 'Conversão direta', type: 'bool', initial: false },
 	
-		{ name: 'form_size', caption: 'Form-Größe [0 - 10]', type: 'float', initial: 5.0 },
-		// { name: 'dot_distance', caption: 'Punkt-Abstand', type: 'float', initial: 2.5 },
+		{ name: 'form_size', caption: 'Tamanho do formulário [0 - 10]', type: 'float', initial: 5.0 },
+	    { name: 'dot_distance', caption: 'Distância entre pontos', type: 'float', initial: 2.5 },
 		// { name: 'form_distance', caption: 'Form-Abstand', type: 'float', initial: 6.0 },
 		// { name: 'line_height', caption: 'Zeilen-Höhe', type: 'float', initial: 10.0 },
-	  	{ name: 'dot_height', caption: 'Punkt-Höhe [0.5 - 0.8]', type: 'float', initial: 0.7 },
-		{ name: 'dot_diameter', caption: 'Punkt-Durchmesser [1.4 - 1.6]', type: 'float', initial: 1.5 },
+	  	{ name: 'dot_height', caption: 'Altura do ponto [0.5 - 0.8]', type: 'float', initial: 0.7 },
+		{ name: 'dot_diameter', caption: 'Diâmetro do ponto [1.4 - 1.6]', type: 'float', initial: 1.5 },
 	
-		{ name: 'plate_thickness', caption: 'Platten-Stärke', type: 'float', initial: 2.0 },
-		{ name: 'plate_margin', caption: 'Rand', type: 'float', initial: 5.0 },
+		{ name: 'plate_thickness', caption: 'Expressura da placa', type: 'float', initial: 2.0 },
+		{ name: 'plate_margin', caption: 'Margem da placa', type: 'float', initial: 5.0 },
 	
-		{ name: 'reference_corner', caption: 'Referenz Eck', type: 'bool', initial: true },
-		{ name: 'stands', caption: 'Stützen generieren', type: 'bool', initial: true },
+		{ name: 'reference_corner', caption: 'Canto de referência', type: 'bool', initial: true },
+		{ name: 'stands', caption: 'Apoio', type: 'bool', initial: true },
 
-		{ name: 'resolution', caption: 'Auflösung', type: 'int', initial: 16, visible: debug },
-		{ name: 'dot_shape', caption: 'Punktform', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Halbkugel', 'Zylinder', 'Nahtlos'], initial: 'smooth' , visible: debug },
-		{ name: 'debug_dot', caption: 'Punkt im Detail', type: 'bool', initial: false, visible: debug }
+		{ name: 'resolution', caption: 'Resolução', type: 'int', initial: 16, visible: debug },
+		{ name: 'dot_shape', caption: 'Formato do ponto', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Esfera', 'Cilindro', 'Plano'], initial: 'smooth' , visible: debug },
+		{ name: 'debug_dot', caption: 'Debug dot', type: 'bool', initial: false, visible: debug }
 	];
 	
 	return parameterDefinitions;
@@ -444,7 +440,7 @@ function main(params)
 	master_dot = null;
 	
 	var formFactor = parameters.form_size / 10.0;
-	parameters.dot_distance = 2.3 + 0.7 * formFactor;
+	parameters.dot_distance = 2.7 + 0.7 * formFactor;
 	parameters.form_distance = parameters.dot_distance * 2.5;
 	parameters.line_height = parameters.dot_distance * 4.0;
 	
