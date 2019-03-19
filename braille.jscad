@@ -408,15 +408,15 @@ function getParameterDefinitions()
 	var parameterDefinitions = [
 		{ name: 'text', caption: 'Texto', type: 'longtext', initial: 'Olá\nMundo' },
 		{ name: 'upper', caption: 'Maiúsculo', type: 'bool', initial: false },
-		{ name: 'contractions', caption: 'Contrações', type: 'bool', initial: true },
+		{ name: 'contractions', caption: 'Contrações', type: 'bool', initial: false },
 		{ name: 'straight', caption: 'Conversão direta', type: 'bool', initial: false },
 	
 		{ name: 'form_size', caption: 'Tamanho do formulário [0 - 10]', type: 'float', initial: 5.0 },
-	    { name: 'dot_distance', caption: 'Distância entre pontos', type: 'float', initial: 2.5 },
+	    { name: 'dot_distance', caption: 'Distância entre pontos', type: 'float', initial: 2.7 },
 		// { name: 'form_distance', caption: 'Form-Abstand', type: 'float', initial: 6.0 },
 		// { name: 'line_height', caption: 'Zeilen-Höhe', type: 'float', initial: 10.0 },
-	  	{ name: 'dot_height', caption: 'Altura do ponto [0.5 - 0.8]', type: 'float', initial: 0.7 },
-		{ name: 'dot_diameter', caption: 'Diâmetro do ponto [1.4 - 1.6]', type: 'float', initial: 1.5 },
+	  	{ name: 'dot_height', caption: 'Altura do ponto [0.5 - 0.8]', type: 'float', initial: 0.75 },
+		{ name: 'dot_diameter', caption: 'Diâmetro do ponto [1.4 - 1.6]', type: 'float', initial: 1.9 },
 	
 		{ name: 'plate_thickness', caption: 'Expressura da placa', type: 'float', initial: 2.0 },
 		{ name: 'plate_margin', caption: 'Margem da placa', type: 'float', initial: 5.0 },
