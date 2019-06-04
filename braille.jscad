@@ -411,12 +411,12 @@ function getParameterDefinitions()
 		{ name: 'contractions', caption: 'Contrações', type: 'bool', initial: false },
 		{ name: 'straight', caption: 'Conversão direta', type: 'bool', initial: false },
 	
-		{ name: 'form_size', caption: 'Tamanho do formulário [0 - 10]', type: 'float', initial: 5.0 },
+		{ name: 'form_size', caption: 'Tamanho do formulário [0mm - 10mm]', type: 'float', initial: 5.0 },
 	    { name: 'dot_distance', caption: 'Distância entre pontos', type: 'float', initial: 2.7 },
 		// { name: 'form_distance', caption: 'Form-Abstand', type: 'float', initial: 6.0 },
 		// { name: 'line_height', caption: 'Zeilen-Höhe', type: 'float', initial: 10.0 },
-	  	{ name: 'dot_height', caption: 'Altura do ponto [0.5 - 0.8]', type: 'float', initial: 0.75 },
-		{ name: 'dot_diameter', caption: 'Diâmetro do ponto [1.4 - 1.6]', type: 'float', initial: 1.9 },
+	  	{ name: 'dot_height', caption: 'Altura do ponto [0.5mm - 0.8mm]', type: 'float', initial: 0.75 },
+		{ name: 'dot_diameter', caption: 'Diâmetro do ponto [1.4mm - 2.0mm]', type: 'float', initial: 1.9 },
 	
 		{ name: 'plate_thickness', caption: 'Expressura da placa', type: 'float', initial: 2.0 },
 		{ name: 'plate_margin', caption: 'Margem da placa', type: 'float', initial: 5.0 },
@@ -426,7 +426,7 @@ function getParameterDefinitions()
 
 		{ name: 'resolution', caption: 'Resolução', type: 'int', initial: 16, visible: debug },
 		{ name: 'dot_shape', caption: 'Formato do ponto', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['Esfera', 'Cilindro', 'Plano'], initial: 'smooth' , visible: debug },
-		{ name: 'debug_dot', caption: 'Debug dot', type: 'bool', initial: false, visible: debug }
+		//{ name: 'debug_dot', caption: 'Debug dot', type: 'bool', initial: false, visible: debug }
 	];
 	
 	return parameterDefinitions;
