@@ -1058,6 +1058,9 @@ OpenJsCad.Processor.prototype = {
       {
         value = control.checked;
       }
+      else if (type == "range") {
+        value = parseFloat(control.value);
+      }
       paramValues[paramdef.name] = value;
     }
     return paramValues;
@@ -1295,10 +1298,11 @@ OpenJsCad.Processor.prototype = {
       {
         type = paramdef.type;
       }
-      if( (type !== "text") && (type !== "int") && (type !== "float") && (type !== "choice") && (type !== "longtext") && (type !== "bool") )
+      if( (type !== "text") && (type !== "int") && (type !== "float") && (type !== "choice") && (type !== "longtext") && (type !== "bool") && (type != "range") )
       {
         throw new Error(errorprefix + "Unknown parameter type '"+type+"'");
       }
+
       var initial;
       if('initial' in paramdef)
       {
@@ -1399,6 +1403,16 @@ OpenJsCad.Processor.prototype = {
           control.checked = false;
         }
       }
+      else if (type == "range") {
+        control = document.createElement("input");
+        control.type = "range";
+        control.min = paramdef.begin;
+        control.max = paramdef.end;
+        control.defaultValue = initial;
+        //control.value = initial;
+        control.step = paramdef.step;
+      }
+
       paramControls.push(control);
       var tr = document.createElement("tr");
       var td = document.createElement("td");

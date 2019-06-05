@@ -406,16 +406,16 @@ function getParameterDefinitions()
 	var debug = false;
 	
 	var parameterDefinitions = [
-		{ name: 'text', caption: 'Texto', type: 'longtext', initial: 'Olá\nMundo' },
+		{ name: 'text', caption: 'Texto', type: 'longtext', initial: 'Olá Mundo' },
 		{ name: 'upper', caption: 'Maiúsculo', type: 'bool', initial: false, visible: false },
 		{ name: 'contractions', caption: 'Contrações', type: 'bool', initial: false, visible: false },
 		{ name: 'straight', caption: 'Conversão direta', type: 'bool', initial: false, visible: false },
 	
 		{ name: 'form_size', caption: 'Tamanho do formulário [0mm - 10mm]', type: 'float', initial: 5.0, visible: false },
-	    { name: 'dot_distance', caption: 'Distância entre pontos [xmm - ymm]:', type: 'float', initial: 2.7 },
+	    { name: 'dot_distance', caption: 'Distância entre pontos [xmm - ymm]:', type: 'float', initial: 2.7, begin: 2.6, end: 2.7, step: 0.01, visible: false },
 		// { name: 'form_distance', caption: 'Form-Abstand', type: 'float', initial: 6.0 },
 		// { name: 'line_height', caption: 'Zeilen-Höhe', type: 'float', initial: 10.0 },
-	  	{ name: 'dot_height', caption: 'Altura do ponto [0.5mm - 0.8mm]:', type: 'float', initial: 0.75 },
+	  	{ name: 'dot_height', caption: 'Altura do ponto [0.6mm - 0.8mm]:', type: 'float', initial: 0.75,  begin: 0.6, end: 0.8, step: 0.01},
 		{ name: 'dot_diameter', caption: 'Diâmetro do ponto [1.4mm - 2.0mm]:', type: 'float', initial: 1.9 },
 	
 		{ name: 'plate_thickness', caption: 'Espessura da placa (mm):', type: 'float', initial: 2.0 },
