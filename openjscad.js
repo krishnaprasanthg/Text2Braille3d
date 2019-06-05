@@ -1404,13 +1404,31 @@ OpenJsCad.Processor.prototype = {
         }
       }
       else if (type == "range") {
+        var box = document.createElement("div");
+
         control = document.createElement("input");
         control.type = "range";
         control.min = paramdef.begin;
         control.max = paramdef.end;
-        control.defaultValue = initial;
-        //control.value = initial;
         control.step = paramdef.step;
+        control.value = initial;
+        control.addEventListener("change", function () {
+          var td = this.parentElement;
+          var span = null;
+          if (td.lastChild.nodeName != "SPAN") {
+            span = document.createElement("span");
+            td.appendChild(span);
+          } else {
+            span = td.lastChild;
+          }
+          span.innerText = "  (" + this.value + "mm)";
+        });
+
+        var controlShow = document.createElement("span");
+
+        box.appendChild(control);
+        box.appendChild(controlShow);
+
       }
 
       paramControls.push(control);
