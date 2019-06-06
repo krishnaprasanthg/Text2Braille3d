@@ -1412,7 +1412,7 @@ OpenJsCad.Processor.prototype = {
         control.max = paramdef.end;
         control.step = paramdef.step;
         control.value = initial;
-        control.addEventListener("change", function () {
+        var _updateValue = function () {
           var td = this.parentElement;
           var span = null;
           if (td.lastChild.nodeName != "SPAN") {
@@ -1422,13 +1422,11 @@ OpenJsCad.Processor.prototype = {
             span = td.lastChild;
           }
           span.innerText = "  (" + this.value + "mm)";
-        });
+        };
 
-        var controlShow = document.createElement("span");
-
-        box.appendChild(control);
-        box.appendChild(controlShow);
-
+        control.addEventListener("change", _updateValue);
+        control.addEventListener("input", _updateValue);
+        
       }
 
       paramControls.push(control);
