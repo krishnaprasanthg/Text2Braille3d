@@ -411,21 +411,21 @@ function getParameterDefinitions()
 		{ name: 'contractions', caption: 'contractions', type: 'bool', initial: false, visible: true },
 		{ name: 'straight', caption: 'Direct Conversion', type: 'bool', initial: false, visible: true },
 	
-		{ name: 'form_size', caption: 'Form Size [0mm - 10mm]', type: 'float', initial: 5.0, visible: false },
-	    { name: 'dot_distance', caption: 'Distance between dots [default: 2.7mm]:', type: 'float', initial: 2.7, begin: 1.6, end: 3.5, step: 0.01, visible: false},
+		{ name: 'form_size', caption: 'Form Size [0mm - 10mm]', type: 'float', initial: 5.0, visible: true },
+	    { name: 'dot_distance', caption: 'Distance between dots [default: 2.7mm]:', type: 'float', initial: 2.7, begin: 1.6, end: 3.5, step: 0.01, visible: true},
 		{ name: 'form_distance', caption: 'Form-Distance', type: 'float', initial: 6.6},
 		{ name: 'line_height', caption: 'Line Height', type: 'float', initial: 10.8, visible: true },
 	  	{ name: 'dot_height', caption: 'Dot Height [default: 0.75mm]:', type: 'range', initial: 0.75,  begin: 0.6, end: 2.0, step: 0.01},
 		{ name: 'dot_diameter', caption: 'Dot Diameter [default: 1.9mm]:', type: 'range', initial: 1.9, begin: 1.2, end: 2.5, step: 0.01 },
 	
-		{ name: 'plate_thickness', caption: 'Base plate thickness (mm):', type: 'float', initial: 2.0 },
-		{ name: 'plate_margin', caption: 'Base plate margin (mm):', type: 'float', initial: 5.0 },
+		{ name: 'plate_thickness', caption: 'Base plate thickness (mm):', type: 'float', initial: 0.2 },
+		{ name: 'plate_margin', caption: 'Base plate margin (mm):', type: 'float', initial: 2.0 },
 	
 		{ name: 'reference_corner', caption: 'Reference Corner ?', type: 'bool', initial: true },
-		{ name: 'stands', caption: 'Support stands ?', type: 'bool', initial: true },
+		{ name: 'stands', caption: 'Support stands ?', type: 'bool', initial: false },
 
 		{ name: 'resolution', caption: 'Resolution', type: 'int', initial: 16, visible: true },
-		{ name: 'dot_shape', caption: 'Dot Shape', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['sphere', 'cylinder', 'smooth'], initial: 'smooth' , visible: false },
+		{ name: 'dot_shape', caption: 'Dot Shape', type: 'choice', values: ['sphere', 'cylinder', 'smooth'], captions: ['sphere', 'cylinder', 'smooth'], initial: 'smooth' , visible: true },
 		//{ name: 'debug_dot', caption: 'Debug dot', type: 'bool', initial: false, visible: debug }
 	];
 	
